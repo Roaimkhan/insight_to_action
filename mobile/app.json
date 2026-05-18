@@ -1,0 +1,27 @@
+{
+  "expo": {
+    "name": "AGENT.AI",
+    "slug": "agent-ai",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "scheme": "agentai",
+    "userInterfaceStyle": "dark",
+    "newArchEnabled": true,
+    "splash": {
+      "backgroundColor": "#070B14"
+    },
+    "ios": {
+      "supportsTablet": false,
+      "bundleIdentifier": "com.agentai.app"
+    },
+    "android": {
+      "adaptiveIcon": {
+        "backgroundColor": "#070B14"
+      },
+      "package": "com.agentai.app"
+    },
+    "plugins": [
+      "expo-router"
+    ]
+  }
+}

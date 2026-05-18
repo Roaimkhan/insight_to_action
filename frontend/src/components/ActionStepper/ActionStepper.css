@@ -1,0 +1,16 @@
+.ncc-action-stepper {
+  position: relative;
+}
+
+.ncc-step-item {
+  transition: border-left-color 0.3s ease;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.spinning-icon {
+  animation: spin 2s linear infinite;
+}

@@ -1,0 +1,19 @@
+.ncc-terminal-block {
+  transition: border-color 0.15s ease;
+}
+
+.ncc-terminal-dots {
+  display: flex;
+  gap: 5px;
+}
+
+.ncc-terminal-dots span {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  opacity: 0.7;
+}
+
+.ncc-terminal-block::-webkit-scrollbar {
+  width: 4px;
+}

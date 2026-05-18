@@ -1,0 +1,54 @@
+.ncc-self-heal {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: calc(100% - 48px);
+  max-width: 600px;
+  background: rgba(13, 22, 38, 0.95);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 176, 32, 0.35);
+  border-radius: 18px;
+  padding: 20px;
+  z-index: 100;
+  box-shadow: 0 -4px 32px rgba(0, 0, 0, 0.5),
+              0 0 16px rgba(255, 176, 32, 0.15);
+}
+
+.ncc-self-heal--success {
+  border-color: rgba(0, 255, 135, 0.45);
+  box-shadow: 0 -4px 32px rgba(0, 0, 0, 0.5),
+              0 0 16px rgba(0, 255, 135, 0.2);
+}
+
+.ncc-self-heal__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.ncc-self-heal__indicator {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  animation: pulse-dot 2s ease-in-out infinite;
+}
+
+.ncc-self-heal__progress {
+  margin-top: 12px;
+}
+
+.ncc-self-heal__bar-track {
+  width: 100%;
+  height: 4px;
+  background: rgba(0, 229, 255, 0.08);
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.ncc-self-heal__bar-fill {
+  height: 100%;
+  border-radius: 999px;
+  transition: width 0.3s ease;
+}

@@ -1,0 +1,66 @@
+.ncc-before-after {
+  background: #0D1626;
+  border: 1px solid rgba(0, 229, 255, 0.08);
+  border-radius: 18px;
+  overflow: hidden;
+}
+
+.ncc-before-after__headers {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  border-bottom: 1px solid rgba(0, 229, 255, 0.08);
+}
+
+.ncc-before-after__col-header {
+  padding: 14px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ncc-before-after__col-header--before {
+  background: rgba(61, 90, 122, 0.06);
+}
+
+.ncc-before-after__col-header--after {
+  background: rgba(0, 229, 255, 0.04);
+}
+
+.ncc-before-after__divider-header {
+  width: 1px;
+  background: rgba(0, 229, 255, 0.12);
+}
+
+.ncc-before-after__row {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  border-bottom: 1px solid rgba(0, 229, 255, 0.04);
+}
+
+.ncc-before-after__row:last-child {
+  border-bottom: none;
+}
+
+.ncc-before-after__cell {
+  padding: 12px 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.ncc-before-after__cell--before {
+  background: rgba(61, 90, 122, 0.03);
+}
+
+.ncc-before-after__cell--after {
+  background: rgba(0, 229, 255, 0.02);
+}
+
+.ncc-before-after__divider {
+  width: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 229, 255, 0.02);
+  border-left: 1px solid rgba(0, 229, 255, 0.08);
+  border-right: 1px solid rgba(0, 229, 255, 0.08);
+}

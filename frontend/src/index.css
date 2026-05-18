@@ -1,0 +1,258 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   Neural Command Center — Global Styles
+   Design System v1.0
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* ── Google Fonts are loaded in index.html ────────────────────────────── */
+
+/* ── Reset & Defaults ─────────────────────────────────────────────────── */
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background-color: #070B14;
+  color: #E8F4FF;
+  min-height: 100vh;
+  overflow-x: hidden;
+  line-height: 1.5;
+}
+
+#root {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-family: inherit;
+  color: inherit;
+}
+
+ul, ol {
+  list-style: none;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+input, textarea, select {
+  font-family: inherit;
+  font-size: inherit;
+  color: inherit;
+  background: none;
+  border: none;
+  outline: none;
+}
+
+/* ── Scrollbar ────────────────────────────────────────────────────────── */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #070B14;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(0, 229, 255, 0.18);
+  border-radius: 999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 229, 255, 0.35);
+}
+
+/* ── Selection ────────────────────────────────────────────────────────── */
+::selection {
+  background: rgba(0, 229, 255, 0.25);
+  color: #E8F4FF;
+}
+
+/* ── Dot Grid Background Pattern ──────────────────────────────────────── */
+.dot-grid-bg {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background-image: radial-gradient(
+    circle at 1px 1px,
+    rgba(0, 229, 255, 0.06) 1px,
+    transparent 0
+  );
+  background-size: 24px 24px;
+}
+
+/* ── Atmospheric Radial Glow ──────────────────────────────────────────── */
+.atmospheric-glow {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background: radial-gradient(
+    ellipse at 50% 40%,
+    rgba(0, 229, 255, 0.03) 0%,
+    transparent 60%
+  );
+}
+
+/* ── Scan Line Effect ─────────────────────────────────────────────────── */
+@keyframes scanLine {
+  0% { transform: translateY(-100vh); }
+  100% { transform: translateY(100vh); }
+}
+
+.scan-line {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(0, 229, 255, 0.15),
+    transparent
+  );
+  z-index: 1;
+  pointer-events: none;
+  animation: scanLine 4s linear infinite;
+}
+
+.scan-line--subtle {
+  composes: scan-line;
+  opacity: 0.08;
+}
+
+/* ── Shimmer Loading ──────────────────────────────────────────────────── */
+@keyframes shimmer {
+  0% { background-position: -400px 0; }
+  100% { background-position: 400px 0; }
+}
+
+.shimmer {
+  background: linear-gradient(
+    90deg,
+    #0D1626 0%,
+    #1A2B47 50%,
+    #0D1626 100%
+  );
+  background-size: 800px 100%;
+  animation: shimmer 1.2s ease-in-out infinite;
+}
+
+/* ── Pulsing Dot ──────────────────────────────────────────────────────── */
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.3; transform: scale(0.85); }
+}
+
+.pulsing-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+/* ── Cursor Blink ─────────────────────────────────────────────────────── */
+@keyframes cursorBlink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+.blinking-cursor {
+  display: inline-block;
+  width: 2px;
+  height: 1em;
+  background: #8B5CF6;
+  animation: cursorBlink 500ms step-end infinite;
+  margin-left: 2px;
+  vertical-align: text-bottom;
+}
+
+/* ── Glow Utilities ───────────────────────────────────────────────────── */
+.glow-cyan {
+  box-shadow: 0 0 12px rgba(0, 229, 255, 0.35),
+              0 0 4px rgba(0, 229, 255, 0.15);
+}
+
+.glow-cyan-active {
+  box-shadow: 0 0 16px rgba(0, 229, 255, 0.55),
+              0 0 6px rgba(0, 229, 255, 0.25);
+}
+
+.glow-red-alert {
+  box-shadow: 0 0 16px rgba(255, 61, 90, 0.55),
+              0 0 6px rgba(255, 61, 90, 0.25);
+}
+
+.glow-green-success {
+  box-shadow: 0 0 12px rgba(0, 255, 135, 0.35),
+              0 0 4px rgba(0, 255, 135, 0.15);
+}
+
+/* ── Red Pulse Alert Background ───────────────────────────────────────── */
+@keyframes redPulse {
+  0%, 100% { background-color: rgba(255, 61, 90, 0.05); }
+  50% { background-color: rgba(255, 61, 90, 0.12); }
+}
+
+.red-pulse-bg {
+  animation: redPulse 2s ease-in-out infinite;
+}
+
+/* ── Typography Helpers ───────────────────────────────────────────────── */
+.font-mono {
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.font-heading {
+  font-family: 'Syne', sans-serif;
+}
+
+.font-body {
+  font-family: 'DM Sans', sans-serif;
+}
+
+/* ── Layout Helpers ───────────────────────────────────────────────────── */
+.screen-container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 16px;
+}
+
+.flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.flex-between {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
