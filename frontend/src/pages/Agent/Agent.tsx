@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { colors } from '../../constants/colors';
 import { typography } from '../../constants/typography';
 import { spacing } from '../../constants/spacing';
-import { staggerContainer, fadeUpVariant } from '../../constants/animation';
+import { staggerContainer, fadeUpVariant, pageEntranceVariant, sectionStaggerContainer, sectionItemVariant, buttonHoverVariant, pulseGlowVariant } from '../../constants/animation';
 import { useAgentStore } from '../../store/agentStore';
 import { startMockStream, scenarioBeforeAfter } from '../../services/mockStream';
 import {
@@ -222,8 +222,30 @@ const Agent: React.FC = () => {
   const scenarioLabel = scenarioId ? scenarioId.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase()) : 'Agent';
 
   return (
-    <div className="agent-screen">
+    <motion.div 
+      className="agent-screen"
+      initial="hidden"
+      animate="visible"
+      variants={pageEntranceVariant}
+    >
       <div className="scan-line" style={{ opacity: 0.08 }} />
+      <motion.div 
+        style={{
+          position: 'absolute',
+          top: '20%',
+          left: '50%',
+          transform: 'translate(-50%, -50%)',
+          width: '300px',
+          height: '300px',
+          background: 'radial-gradient(circle, rgba(24, 72, 200, 0.1) 0%, rgba(24, 72, 200, 0) 70%)',
+          borderRadius: '50%',
+          filter: 'blur(40px)',
+          pointerEvents: 'none',
+          zIndex: 0,
+        }}
+        animate="animate"
+        variants={pulseGlowVariant}
+      />
 
       <div className="agent-content screen-container">
         {/* ── Header ────────────────────────────────────────────── */}
@@ -253,7 +275,7 @@ const Agent: React.FC = () => {
             </div>
             <div style={{ display: 'flex', alignItems: 'center', gap: spacing.md }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-                <PulsingDot color={status === 'complete' ? colors.accent.green : colors.accent.cyan} size={6} />
+                <PulsingDot color={status === 'complete' ? colors.accent.emerald : colors.accent.cyan} size={6} />
                 <Badge
                   label={status === 'complete' ? 'COMPLETE' : 'RUNNING'}
                   variant={status === 'complete' ? 'success' : 'info'}
@@ -309,7 +331,7 @@ const Agent: React.FC = () => {
                   title="Contradictions"
                   badge={`${contradictions.length}`}
                   badgeVariant="danger"
-                  accentColor={colors.accent.red}
+                  accentColor={colors.accent.crimson}
                 />
                 <div style={{ display: 'flex', flexDirection: 'column', gap: spacing.sm }}>
                   {contradictions.map((c, i) => (
@@ -338,21 +360,33 @@ const Agent: React.FC = () => {
             variants={staggerContainer}
           >
             <SectionHeader title="Agent Reasoning" badge="LIVE" badgeVariant="thinking" accentColor={colors.accent.violet} />
-            <Card delay={200}>
-              <TerminalBlock title="agent.reasoning.log" maxHeight={500}>
-                <div>
-                  {llmLines.map((line, i) => (
-                    <div key={i} style={{
-                      color: line.includes('CONTRADICTION') ? colors.accent.red :
-                             line.startsWith('>') ? colors.accent.cyan :
-                             line.includes('⚠') ? colors.accent.amber :
-                             line.includes('→') ? colors.accent.green :
-                             colors.accent.violet,
-                      marginBottom: 2,
-                    }}>
-                      {line || '\u00A0'}
-                    </div>
-                  ))}
+            <Card delay={200} className="obsidian-card-wrap">
+              <TerminalBlock title="agent.reasoning.log" maxHeight={480} isActive={status === 'running'}>
+                <div style={{ paddingBottom: '12px' }}>
+                  {llmLines.map((line, i) => {
+                    const isLast = i === llmLines.length - 1;
+                    return (
+                      <motion.div
+                        key={i}
+                        initial={isLast ? { opacity: 0.3, y: 3 } : { opacity: 1, y: 0 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.3 }}
+                        style={{
+                          color: line.includes('CONTRADICTION') ? '#F87171' : // brighter red for terminal
+                                 line.startsWith('>') ? '#2DD4BF' : // bright teal
+                                 line.includes('⚠') ? '#FBBF24' : // bright amber
+                                 line.includes('→') ? '#34D399' : // bright emerald
+                                 '#E9D5FF', // bright mauve/violet for text visibility in dark mode
+                          textShadow: isLast && status === 'running' ? '0 0 10px rgba(167, 139, 250, 0.45)' : 'none',
+                          marginBottom: 4,
+                          fontWeight: isLast && status === 'running' ? 700 : 400,
+                          letterSpacing: '0.4px',
+                        }}
+                      >
+                        {line || '\u00A0'}
+                      </motion.div>
+                    );
+                  })}
                   {status === 'running' && (
                     <span className="blinking-cursor" />
                   )}
@@ -376,7 +410,7 @@ const Agent: React.FC = () => {
                 fontFamily: typography.monoBold.fontFamily,
                 fontSize: typography.monoBold.fontSize,
                 fontWeight: typography.monoBold.fontWeight,
-                color: colors.accent.green,
+                color: colors.accent.emerald,
               }}>
                 CHAIN COMPLETE ✓
               </span>
@@ -394,7 +428,7 @@ const Agent: React.FC = () => {
 
       {/* Self-Heal Panel */}
       <SelfHealPanel event={healEvent} />
-    </div>
+    </motion.div>
   );
 };
 

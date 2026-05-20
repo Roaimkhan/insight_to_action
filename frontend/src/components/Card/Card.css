@@ -1,4 +1,39 @@
 .ncc-card {
-  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  position: relative;
+  overflow: hidden;
+  transition: border-color 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s cubic-bezier(0.16, 1, 0.3, 1), transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
   will-change: transform, opacity;
+  background: var(--glass-1);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+
+.card-spotlight-border {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  padding: 1.5px;
+  background: radial-gradient(
+    250px circle at var(--x, -1000px) var(--y, -1000px),
+    rgba(24, 72, 200, 0.22) 0%,
+    rgba(24, 72, 200, 0.05) 50%,
+    transparent 100%
+  );
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  z-index: 1;
+}
+
+.ncc-card:hover .card-spotlight-border {
+  opacity: 1;
+}
+
+/* Ensure child elements sit above the spotlight border */
+.ncc-card > *:not(.card-spotlight-border) {
+  position: relative;
+  z-index: 2;
 }

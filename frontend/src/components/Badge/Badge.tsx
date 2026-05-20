@@ -14,13 +14,13 @@ interface BadgeProps {
 }
 
 const variantStyles: Record<BadgeVariant, { bg: string; color: string; borderColor: string }> = {
-  info:     { bg: 'rgba(0, 229, 255, 0.12)', color: colors.accent.cyan,   borderColor: 'rgba(0, 229, 255, 0.25)' },
-  success:  { bg: 'rgba(0, 255, 135, 0.12)', color: colors.accent.green,  borderColor: 'rgba(0, 255, 135, 0.25)' },
-  warning:  { bg: 'rgba(255, 176, 32, 0.12)', color: colors.accent.amber, borderColor: 'rgba(255, 176, 32, 0.25)' },
-  danger:   { bg: 'rgba(255, 61, 90, 0.12)', color: colors.accent.red,    borderColor: 'rgba(255, 61, 90, 0.25)' },
-  thinking: { bg: 'rgba(139, 92, 246, 0.12)', color: colors.accent.violet, borderColor: 'rgba(139, 92, 246, 0.25)' },
-  fallback: { bg: 'rgba(255, 107, 53, 0.12)', color: colors.accent.orange, borderColor: 'rgba(255, 107, 53, 0.25)' },
-  neutral:  { bg: 'rgba(61, 90, 122, 0.12)', color: colors.text.secondary, borderColor: 'rgba(61, 90, 122, 0.25)' },
+  info:     { bg: 'var(--brand-light)', color: 'var(--brand)', borderColor: 'var(--border-brand)' },
+  success:  { bg: '#ECFDF5', color: 'var(--success)', borderColor: 'rgba(4, 120, 87, 0.2)' },
+  warning:  { bg: '#FFFBEB', color: 'var(--warning)', borderColor: 'rgba(180, 83, 9, 0.2)' },
+  danger:   { bg: '#FEF2F2', color: 'var(--danger)', borderColor: 'rgba(185, 28, 28, 0.2)' },
+  thinking: { bg: '#F5F3FF', color: 'var(--ai-violet)', borderColor: 'rgba(109, 40, 217, 0.2)' },
+  fallback: { bg: '#ECFEFF', color: 'var(--live-teal)', borderColor: 'rgba(14, 74, 144, 0.2)' },
+  neutral:  { bg: 'var(--bg-sunken)', color: 'var(--text-secondary)', borderColor: 'var(--border-default)' },
 };
 
 const Badge = React.memo<BadgeProps>(({ label, variant = 'info', className = '', style }) => {
@@ -36,7 +36,7 @@ const Badge = React.memo<BadgeProps>(({ label, variant = 'info', className = '',
         padding: `${spacing.xs - 1}px ${spacing.sm}px`,
         fontFamily: typography.monoSm.fontFamily,
         fontSize: typography.monoSm.fontSize,
-        fontWeight: typography.monoSm.fontWeight,
+        fontWeight: 700,
         lineHeight: 1,
         display: 'inline-flex',
         alignItems: 'center',

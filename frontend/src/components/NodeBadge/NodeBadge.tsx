@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef, useCallback } from 'react';
+import React, { useCallback } from 'react';
 import { colors } from '../../constants/colors';
 import { typography } from '../../constants/typography';
 import { spacing } from '../../constants/spacing';
@@ -39,6 +39,7 @@ const NodeBadge = React.memo<NodeBadgeProps>(({ node, elapsedMs }) => {
         fontFamily: typography.mono.fontFamily,
         fontSize: typography.mono.fontSize,
         color: colors.accent.cyan,
+        fontWeight: 700
       }}>
         {formatTime(elapsedMs)}
       </span>

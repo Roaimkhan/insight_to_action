@@ -33,15 +33,15 @@ const ContradictionCard = React.memo<ContradictionCardProps>(({ contradiction, a
       <div className="ncc-contradiction__header">
         <div style={{ display: 'flex', alignItems: 'center', gap: spacing.sm }}>
           {isActive ? (
-            <BoltIcon size={18} color={colors.accent.red} />
+            <BoltIcon size={18} color={colors.accent.crimson} />
           ) : (
-            <CompleteIcon size={18} color={colors.accent.green} />
+            <CompleteIcon size={18} color={colors.accent.emerald} />
           )}
           <span style={{
             fontFamily: typography.h3.fontFamily,
             fontSize: typography.h3.fontSize,
             fontWeight: typography.h3.fontWeight,
-            color: isActive ? colors.accent.red : colors.accent.green,
+            color: isActive ? colors.accent.crimson : colors.accent.emerald,
           }}>
             {isActive ? 'Contradiction Detected' : 'Contradiction Resolved'}
           </span>
@@ -71,9 +71,9 @@ const ContradictionCard = React.memo<ContradictionCardProps>(({ contradiction, a
             fontFamily: typography.monoBold.fontFamily,
             fontSize: typography.monoBold.fontSize,
             fontWeight: typography.monoBold.fontWeight,
-            color: contradiction.source_a.credibility >= 0.7 ? colors.accent.green :
+            color: contradiction.source_a.credibility >= 0.7 ? colors.accent.emerald :
                    contradiction.source_a.credibility >= 0.4 ? colors.accent.amber :
-                   colors.accent.red,
+                   colors.accent.crimson,
           }}>
             {contradiction.source_a.credibility.toFixed(2)}
           </span>
@@ -106,9 +106,9 @@ const ContradictionCard = React.memo<ContradictionCardProps>(({ contradiction, a
             fontFamily: typography.monoBold.fontFamily,
             fontSize: typography.monoBold.fontSize,
             fontWeight: typography.monoBold.fontWeight,
-            color: contradiction.source_b.credibility >= 0.7 ? colors.accent.green :
+            color: contradiction.source_b.credibility >= 0.7 ? colors.accent.emerald :
                    contradiction.source_b.credibility >= 0.4 ? colors.accent.amber :
-                   colors.accent.red,
+                   colors.accent.crimson,
           }}>
             {contradiction.source_b.credibility.toFixed(2)}
           </span>

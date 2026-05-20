@@ -38,7 +38,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     paddingHorizontal: spacing.md,
     paddingVertical: spacing.sm,
-    backgroundColor: colors.bg.secondary,
+    backgroundColor: colors.bg.surface,
     borderBottomWidth: 1,
     borderBottomColor: colors.border.subtle,
   },
@@ -55,12 +55,12 @@ const styles = StyleSheet.create({
     color: colors.text.muted,
   },
   nodeBadge: {
-    backgroundColor: 'rgba(0,229,255,0.1)',
+    backgroundColor: colors.accent.cyanGlow,
     paddingHorizontal: spacing.sm,
     paddingVertical: spacing.xs - 1,
     borderRadius: radius.sm,
     borderWidth: 1,
-    borderColor: colors.border.active,
+    borderColor: colors.border.cyan,
   },
   nodeText: {
     fontFamily: typography.mono.fontFamily,

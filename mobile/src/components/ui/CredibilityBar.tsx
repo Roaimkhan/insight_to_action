@@ -17,9 +17,9 @@ interface CredibilityBarProps {
 }
 
 const getBarColor = (score: number): string => {
-  if (score > 0.7) return colors.accent.green;
+  if (score > 0.7) return colors.accent.emerald;
   if (score >= 0.5) return colors.accent.amber;
-  return colors.accent.red;
+  return colors.accent.crimson;
 };
 
 const CredibilityBar: React.FC<CredibilityBarProps> = ({

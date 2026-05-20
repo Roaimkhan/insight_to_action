@@ -13,4 +13,5 @@ export { default as ContradictionCard } from './ContradictionCard/ContradictionC
 export { default as SelfHealPanel } from './SelfHealPanel/SelfHealPanel';
 export { default as BeforeAfterPanel } from './BeforeAfterPanel/BeforeAfterPanel';
 export { default as NodeBadge } from './NodeBadge/NodeBadge';
+export { default as Modal } from './Modal/Modal';
 export * from './Icons/Icons';

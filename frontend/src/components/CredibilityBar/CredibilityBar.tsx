@@ -22,9 +22,9 @@ const CredibilityBar = React.memo<CredibilityBarProps>(({
 }) => {
   // Dynamic color based on score if no override
   const barColor = color || (
-    score >= 0.7 ? colors.accent.green :
+    score >= 0.7 ? colors.accent.emerald :
     score >= 0.4 ? colors.accent.amber :
-    colors.accent.red
+    colors.accent.crimson
   );
 
   const percentage = Math.round(score * 100);

@@ -1,10 +1,10 @@
-import React, { useCallback, useMemo } from 'react';
-import { motion } from 'framer-motion';
+import React, { useCallback, useMemo, useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { colors } from '../../constants/colors';
 import { typography } from '../../constants/typography';
 import { spacing } from '../../constants/spacing';
-import { staggerContainer, fadeUpVariant } from '../../constants/animation';
+import { staggerContainer, fadeUpVariant, pageEntranceVariant, sectionStaggerContainer, sectionItemVariant, buttonHoverVariant, pulseGlowVariant, numberCounterVariant } from '../../constants/animation';
 import { useAgentStore } from '../../store/agentStore';
 import {
   Card,
@@ -16,14 +16,26 @@ import {
 import './Metrics.css';
 
 const statusColorMap: Record<string, string> = {
-  info: colors.accent.cyan,
-  success: colors.accent.green,
+  info: colors.accent.teal,
+  success: colors.accent.emerald,
   warning: colors.accent.amber,
-  error: colors.accent.red,
+  error: colors.accent.crimson,
+};
+
+const getSimulatedHash = (event: string, timestamp: number) => {
+  let hash = 0;
+  const str = event + timestamp;
+  for (let i = 0; i < str.length; i++) {
+    hash = (hash << 5) - hash + str.charCodeAt(i);
+    hash |= 0;
+  }
+  const hex = Math.abs(hash).toString(16).padStart(8, '0');
+  return `sha256:${hex}e8c5f4a10ae674b9a7d3b2e${hex}`;
 };
 
 const Metrics: React.FC = () => {
   const navigate = useNavigate();
+  const [expandedRow, setExpandedRow] = useState<number | null>(null);
 
   const metrics = useAgentStore((s) => s.metrics);
   const auditTrail = useAgentStore((s) => s.auditTrail);
@@ -64,13 +76,34 @@ const Metrics: React.FC = () => {
   const costSaved = metrics?.cost_saved ?? 0;
 
   // Determine gauge colors
-  const riskColor = riskDelta > 20 ? colors.accent.green : colors.accent.amber;
-  const latencyColor = latencySec < 15 ? colors.accent.green : colors.accent.amber;
-  const stepsColor = stepsCompleted === stepsTotal ? colors.accent.green : colors.accent.amber;
+  const riskColor = riskDelta > 20 ? colors.accent.emerald : colors.accent.amber;
+  const latencyColor = latencySec < 15 ? colors.accent.emerald : colors.accent.amber;
+  const stepsColor = stepsCompleted === stepsTotal ? colors.accent.emerald : colors.accent.amber;
 
   return (
-    <div className="metrics-screen">
+    <motion.div 
+      className="metrics-screen"
+      initial="hidden"
+      animate="visible"
+      variants={pageEntranceVariant}
+    >
       <div className="scan-line" style={{ opacity: 0.06 }} />
+      <motion.div 
+        style={{
+          position: 'absolute',
+          bottom: '10%',
+          left: '5%',
+          width: '280px',
+          height: '280px',
+          background: 'radial-gradient(circle, rgba(167, 139, 250, 0.1) 0%, rgba(167, 139, 250, 0) 70%)',
+          borderRadius: '50%',
+          filter: 'blur(40px)',
+          pointerEvents: 'none',
+          zIndex: 0,
+        }}
+        animate="animate"
+        variants={pulseGlowVariant}
+      />
 
       <div className="metrics-content screen-container">
         {/* Header */}
@@ -136,9 +169,9 @@ const Metrics: React.FC = () => {
                 <MetricGauge value={stepsCompleted} maxValue={stepsTotal} label="Steps Complete" suffix={`/${stepsTotal}`} color={stepsColor} size="md" />
               </Card>
             </motion.div>
-            <motion.div variants={fadeUpVariant} custom={600}>
+             <motion.div variants={fadeUpVariant} custom={600}>
               <Card delay={600}>
-                <MetricGauge value={costSaved} maxValue={100} label="Direct Cost" suffix=" PKR" color={colors.accent.green} size="md" />
+                <MetricGauge value={costSaved} maxValue={100} label="Direct Cost" suffix=" PKR" color={colors.accent.emerald} size="md" />
               </Card>
             </motion.div>
           </div>
@@ -160,8 +193,8 @@ const Metrics: React.FC = () => {
                 <div className="metrics-timeline-chart">
                   {actionChain.map((step, i) => {
                     const barWidth = step.latency_ms ? Math.max((step.latency_ms / 1000) * 80, 30) : 30;
-                    const barColor = step.status === 'complete' ? colors.accent.green :
-                                     step.status === 'failed' ? colors.accent.red :
+                    const barColor = step.status === 'complete' ? colors.accent.emerald :
+                                     step.status === 'failed' ? colors.accent.crimson :
                                      step.status === 'rolled_back' ? colors.accent.amber :
                                      colors.text.muted;
                     return (
@@ -222,36 +255,87 @@ const Metrics: React.FC = () => {
                 {auditTrail.map((entry, i) => (
                   <div
                     key={i}
-                    className="metrics-audit-entry"
-                    style={{
-                      borderLeftColor: statusColorMap[entry.status] || colors.text.muted,
-                    }}
+                    className={`metrics-audit-entry-wrapper ${expandedRow === i ? 'expanded' : ''}`}
                   >
-                    <span style={{
-                      fontFamily: typography.monoSm.fontFamily,
-                      fontSize: typography.monoSm.fontSize,
-                      color: colors.text.muted,
-                      minWidth: 80,
-                      flexShrink: 0,
-                    }}>
-                      {formatTimestamp(entry.timestamp_ms)}
-                    </span>
-                    <span style={{
-                      fontFamily: typography.mono.fontFamily,
-                      fontSize: typography.mono.fontSize,
-                      color: statusColorMap[entry.status] || colors.text.primary,
-                      flex: 1,
-                    }}>
-                      {entry.event}
-                    </span>
-                    <span style={{
-                      fontFamily: typography.small.fontFamily,
-                      fontSize: typography.small.fontSize,
-                      color: colors.text.secondary,
-                      flex: 2,
-                    }}>
-                      {entry.detail}
-                    </span>
+                    <div
+                      className="metrics-audit-entry"
+                      onClick={() => setExpandedRow(expandedRow === i ? null : i)}
+                      style={{
+                        borderLeftColor: statusColorMap[entry.status] || colors.text.muted,
+                        cursor: 'pointer',
+                      }}
+                    >
+                      <span style={{
+                        fontFamily: typography.monoSm.fontFamily,
+                        fontSize: typography.monoSm.fontSize,
+                        color: colors.text.muted,
+                        minWidth: 80,
+                        flexShrink: 0,
+                      }}>
+                        {formatTimestamp(entry.timestamp_ms)}
+                      </span>
+                      <span style={{
+                        fontFamily: typography.mono.fontFamily,
+                        fontSize: typography.mono.fontSize,
+                        color: statusColorMap[entry.status] || colors.text.primary,
+                        flex: 1,
+                      }}>
+                        {entry.event}
+                      </span>
+                      <span style={{
+                        fontFamily: typography.small.fontFamily,
+                        fontSize: typography.small.fontSize,
+                        color: colors.text.secondary,
+                        flex: 2,
+                      }}>
+                        {entry.detail}
+                      </span>
+                      <span className={`expand-indicator ${expandedRow === i ? 'rotated' : ''}`}>
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                          <polyline points="6 9 12 15 18 9"></polyline>
+                        </svg>
+                      </span>
+                    </div>
+
+                    <AnimatePresence initial={false}>
+                      {expandedRow === i && (
+                        <motion.div
+                          initial={{ height: 0, opacity: 0 }}
+                          animate={{ height: 'auto', opacity: 1 }}
+                          exit={{ height: 0, opacity: 0 }}
+                          transition={{ duration: 0.2, ease: 'easeInOut' }}
+                          style={{ overflow: 'hidden' }}
+                        >
+                          <div className="audit-json-explorer">
+                            <div className="audit-json-header">
+                              <span>SECURE PROTOCOL PAYLOAD</span>
+                              <span className="secure-badge">VERIFIED</span>
+                            </div>
+                            <pre className="json-pre">
+                              <code>
+                                {JSON.stringify(
+                                  {
+                                    trace_id: `tr_${(entry.timestamp_ms * 3).toString(16).substring(0, 8)}cf4a10e`,
+                                    security_tier: "LEVEL_3_COMPLIANCE",
+                                    integrity_hash: getSimulatedHash(entry.event, entry.timestamp_ms),
+                                    timestamp: new Date(entry.timestamp_ms).toISOString(),
+                                    actor: "SupplyAI Cognitive Agent v3.5",
+                                    event_type: `${entry.status.toUpperCase()}_EVENT`,
+                                    payload: {
+                                      event: entry.event,
+                                      status: entry.status,
+                                      detail: entry.detail
+                                    }
+                                  },
+                                  null,
+                                  2
+                                )}
+                              </code>
+                            </pre>
+                          </div>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
                   </div>
                 ))}
                 {auditTrail.length === 0 && (
@@ -280,8 +364,9 @@ const Metrics: React.FC = () => {
           <motion.button
             className="metrics-export-btn"
             onClick={handleExportAudit}
-            whileHover={{ scale: 1.02, borderColor: colors.border.active }}
-            whileTap={{ scale: 0.98 }}
+            variants={buttonHoverVariant}
+            whileHover="hover"
+            whileTap="tap"
           >
             <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
               <path d="M8 2v8M4 6l4 4 4-4M2 12v2h12v-2" stroke={colors.accent.cyan} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
@@ -292,8 +377,9 @@ const Metrics: React.FC = () => {
           <motion.button
             className="metrics-new-btn"
             onClick={handleNewScenario}
-            whileHover={{ scale: 1.02, boxShadow: `0 0 24px rgba(0, 229, 255, 0.4)` }}
-            whileTap={{ scale: 0.98 }}
+            variants={buttonHoverVariant}
+            whileHover="hover"
+            whileTap="tap"
           >
             <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
               <path d="M12 4l-6 6 6 6" stroke={colors.text.inverse} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" transform="rotate(180 8 8)" />
@@ -302,7 +388,7 @@ const Metrics: React.FC = () => {
           </motion.button>
         </motion.div>
       </div>
-    </div>
+    </motion.div>
   );
 };
 

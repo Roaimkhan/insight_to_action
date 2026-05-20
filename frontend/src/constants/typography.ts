@@ -1,13 +1,12 @@
 // src/constants/typography.ts — Type scale definitions
 // Fonts loaded via Google Fonts in index.html:
 // JetBrains Mono (numbers, code, metrics)
-// Syne (titles, headers)
-// DM Sans (body text)
+// Plus Jakarta Sans (titles, headers, body text)
 
 export const fontFamily = {
   mono:     "'JetBrains Mono', monospace",
-  heading:  "'Syne', sans-serif",
-  body:     "'DM Sans', sans-serif",
+  heading:  "'Plus Jakarta Sans', sans-serif",
+  body:     "'Plus Jakarta Sans', sans-serif",
 } as const;
 
 export const typography = {

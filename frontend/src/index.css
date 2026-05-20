@@ -1,9 +1,75 @@
 /* ═══════════════════════════════════════════════════════════════════════════
-   Neural Command Center — Global Styles
-   Design System v1.0
+   SupplyAI command center — Global Styles
+   Design System v2.0 (Daylight Glass)
    ═══════════════════════════════════════════════════════════════════════════ */
 
-/* ── Google Fonts are loaded in index.html ────────────────────────────── */
+/* ── CSS Variables (Single Source of Truth) ────────────────────────────── */
+:root {
+  /* Backgrounds */
+  --bg-base:          #F4F6FD;   /* page root — slight blue-cool white */
+  --bg-surface:       #FFFFFF;   /* card surfaces */
+  --bg-sunken:        #E9EDF8;   /* inputs, code blocks */
+  --bg-overlay:       rgba(244, 246, 253, 0.94);
+
+  /* Glass layers */
+  --glass-1:          rgba(255, 255, 255, 0.70);   /* base glass */
+  --glass-2:          rgba(255, 255, 255, 0.88);   /* elevated glass */
+  --glass-3:          rgba(255, 255, 255, 0.96);   /* top-level glass */
+  --glass-dark:       rgba(17, 24, 39, 0.88);      /* terminal panel */
+  --glass-border:     rgba(255, 255, 255, 0.80);
+  --glass-border-dark: rgba(255, 255, 255, 0.10);
+
+  /* Brand — deep sapphire blue */
+  --brand:            #1848C8;
+  --brand-hover:      #1338A8;
+  --brand-light:      #E8EFFE;
+  --brand-subtle:     rgba(24, 72, 200, 0.08);
+
+  /* Semantic */
+  --success:          #047857;   /* emerald */
+  --success-light:    #ECFDF5;
+  --success-border:   rgba(4, 120, 87, 0.22);
+  --warning:          #B45309;   /* amber */
+  --warning-light:    #FFFBEB;
+  --warning-border:   rgba(180, 83, 9, 0.22);
+  --danger:           #B91C1C;   /* red */
+  --danger-light:     #FEF2F2;
+  --danger-border:    rgba(185, 28, 28, 0.22);
+  --ai-violet:        #6D28D9;   /* LLM stream */
+  --ai-violet-light:  #F5F3FF;
+  --ai-border:        rgba(109, 40, 217, 0.22);
+  --live-teal:        #0E7490;   /* real-time / active */
+  --live-teal-light:  #ECFEFF;
+
+  /* Text */
+  --text-primary:     #0D1526;
+  --text-secondary:   #4A5568;
+  --text-muted:       #94A3B8;
+  --text-disabled:    #CBD5E1;
+  --text-inverse:     #FFFFFF;
+  --text-brand:       #1848C8;
+
+  /* Borders */
+  --border-subtle:    rgba(13, 21, 38, 0.06);
+  --border-default:   rgba(13, 21, 38, 0.12);
+  --border-strong:    rgba(13, 21, 38, 0.22);
+  --border-brand:     rgba(24, 72, 200, 0.28);
+
+  /* Shadows */
+  --shadow-xs: 0 1px 2px rgba(13,21,38,0.04);
+  --shadow-sm: 0 2px 8px rgba(13,21,38,0.06), 0 1px 2px rgba(13,21,38,0.04);
+  --shadow-md: 0 6px 24px rgba(13,21,38,0.08), 0 2px 6px rgba(13,21,38,0.04);
+  --shadow-lg: 0 16px 48px rgba(13,21,38,0.10), 0 6px 16px rgba(13,21,38,0.06);
+  --shadow-xl: 0 32px 80px rgba(13,21,38,0.12), 0 12px 32px rgba(13,21,38,0.08);
+  --shadow-glow-brand:   0 0 32px rgba(24,72,200,0.18);
+  --shadow-glow-success: 0 0 32px rgba(4,120,87,0.18);
+  --shadow-glow-danger:  0 0 32px rgba(185,28,28,0.18);
+
+  /* Typography variables */
+  --font-display: 'Plus Jakarta Sans', sans-serif;
+  --font-body:    'Plus Jakarta Sans', sans-serif;
+  --font-mono:    'JetBrains Mono', monospace;
+}
 
 /* ── Reset & Defaults ─────────────────────────────────────────────────── */
 *,
@@ -21,13 +87,56 @@ html {
   text-rendering: optimizeLegibility;
 }
 
+@keyframes float1 {
+  0% { transform: translate(0px, 0px) scale(1); }
+  33% { transform: translate(40px, -50px) scale(1.05); }
+  66% { transform: translate(-20px, 30px) scale(0.95); }
+  100% { transform: translate(0px, 0px) scale(1); }
+}
+
+@keyframes float2 {
+  0% { transform: translate(0px, 0px) scale(1); }
+  50% { transform: translate(-50px, 40px) scale(1.1); }
+  100% { transform: translate(0px, 0px) scale(1); }
+}
+
 body {
-  font-family: 'DM Sans', sans-serif;
-  background-color: #070B14;
-  color: #E8F4FF;
+  font-family: var(--font-body);
+  background:
+    radial-gradient(ellipse 80% 60% at 20% 40%, rgba(24, 72, 200, 0.05) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 50% at 80% 80%, rgba(109, 40, 217, 0.04) 0%, transparent 55%),
+    var(--bg-base);
+  color: var(--text-primary);
   min-height: 100vh;
   overflow-x: hidden;
   line-height: 1.5;
+  position: relative;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  width: 500px;
+  height: 500px;
+  top: -100px;
+  left: -100px;
+  background: radial-gradient(circle, rgba(24, 72, 200, 0.05) 0%, transparent 70%);
+  z-index: -1;
+  pointer-events: none;
+  animation: float1 20s infinite ease-in-out;
+}
+
+body::after {
+  content: '';
+  position: fixed;
+  width: 400px;
+  height: 400px;
+  bottom: -80px;
+  right: -80px;
+  background: radial-gradient(circle, rgba(14, 116, 144, 0.04) 0%, transparent 70%);
+  z-index: -1;
+  pointer-events: none;
+  animation: float2 25s infinite ease-in-out;
 }
 
 #root {
@@ -47,6 +156,7 @@ button {
   cursor: pointer;
   font-family: inherit;
   color: inherit;
+  outline: none;
 }
 
 ul, ol {
@@ -74,22 +184,24 @@ input, textarea, select {
 }
 
 ::-webkit-scrollbar-track {
-  background: #070B14;
+  background: transparent;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(0, 229, 255, 0.18);
+  background: rgba(24, 72, 200, 0.12);
   border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.5);
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(0, 229, 255, 0.35);
+  background: var(--brand-subtle);
+  border-color: var(--border-brand);
 }
 
 /* ── Selection ────────────────────────────────────────────────────────── */
 ::selection {
-  background: rgba(0, 229, 255, 0.25);
-  color: #E8F4FF;
+  background: rgba(24, 72, 200, 0.12);
+  color: var(--brand);
 }
 
 /* ── Dot Grid Background Pattern ──────────────────────────────────────── */
@@ -100,7 +212,7 @@ input, textarea, select {
   z-index: 0;
   background-image: radial-gradient(
     circle at 1px 1px,
-    rgba(0, 229, 255, 0.06) 1px,
+    rgba(24, 72, 200, 0.04) 1px,
     transparent 0
   );
   background-size: 24px 24px;
@@ -114,7 +226,7 @@ input, textarea, select {
   z-index: 0;
   background: radial-gradient(
     ellipse at 50% 40%,
-    rgba(0, 229, 255, 0.03) 0%,
+    rgba(24, 72, 200, 0.03) 0%,
     transparent 60%
   );
 }
@@ -134,17 +246,17 @@ input, textarea, select {
   background: linear-gradient(
     90deg,
     transparent,
-    rgba(0, 229, 255, 0.15),
+    rgba(24, 72, 200, 0.08),
     transparent
   );
   z-index: 1;
   pointer-events: none;
-  animation: scanLine 4s linear infinite;
+  animation: scanLine 6s linear infinite;
 }
 
 .scan-line--subtle {
   composes: scan-line;
-  opacity: 0.08;
+  opacity: 0.04;
 }
 
 /* ── Shimmer Loading ──────────────────────────────────────────────────── */
@@ -156,18 +268,18 @@ input, textarea, select {
 .shimmer {
   background: linear-gradient(
     90deg,
-    #0D1626 0%,
-    #1A2B47 50%,
-    #0D1626 100%
+    var(--bg-sunken) 0%,
+    rgba(255, 255, 255, 0.6) 50%,
+    var(--bg-sunken) 100%
   );
   background-size: 800px 100%;
-  animation: shimmer 1.2s ease-in-out infinite;
+  animation: shimmer 1.5s ease-in-out infinite;
 }
 
 /* ── Pulsing Dot ──────────────────────────────────────────────────────── */
 @keyframes pulse {
   0%, 100% { opacity: 1; transform: scale(1); }
-  50% { opacity: 0.3; transform: scale(0.85); }
+  50% { opacity: 0.4; transform: scale(0.85); }
 }
 
 .pulsing-dot {
@@ -185,39 +297,88 @@ input, textarea, select {
 
 .blinking-cursor {
   display: inline-block;
-  width: 2px;
+  width: 7px;
   height: 1em;
-  background: #8B5CF6;
-  animation: cursorBlink 500ms step-end infinite;
+  background: var(--ai-violet);
+  animation: cursorBlink 800ms step-end infinite;
   margin-left: 2px;
   vertical-align: text-bottom;
 }
 
-/* ── Glow Utilities ───────────────────────────────────────────────────── */
-.glow-cyan {
-  box-shadow: 0 0 12px rgba(0, 229, 255, 0.35),
-              0 0 4px rgba(0, 229, 255, 0.15);
+/* ── Glassmorphism Helper Classes ─────────────────────────────────────── */
+
+/* Base glass — standard cards */
+.glass {
+  background: var(--glass-1);
+  backdrop-filter: blur(16px) saturate(160%);
+  -webkit-backdrop-filter: blur(16px) saturate(160%);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--shadow-sm), inset 0 1px 0 rgba(255, 255, 255, 0.9);
 }
 
-.glow-cyan-active {
-  box-shadow: 0 0 16px rgba(0, 229, 255, 0.55),
-              0 0 6px rgba(0, 229, 255, 0.25);
+/* Elevated glass — panels, modals */
+.glass-elevated {
+  background: var(--glass-2);
+  backdrop-filter: blur(32px) saturate(180%);
+  -webkit-backdrop-filter: blur(32px) saturate(180%);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--shadow-lg), inset 0 1px 0 rgba(255, 255, 255, 1);
 }
 
-.glow-red-alert {
-  box-shadow: 0 0 16px rgba(255, 61, 90, 0.55),
-              0 0 6px rgba(255, 61, 90, 0.25);
+/* Terminal glass — dark panel inside light UI */
+.glass-terminal {
+  background: var(--glass-dark);
+  backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: var(--shadow-lg), inset 0 1px 0 rgba(255, 255, 255, 0.06);
 }
 
-.glow-green-success {
-  box-shadow: 0 0 12px rgba(0, 255, 135, 0.35),
-              0 0 4px rgba(0, 255, 135, 0.15);
+/* Active card — brand-tinted glow border */
+.glass-active {
+  border-color: var(--border-brand);
+  box-shadow: var(--shadow-md), var(--shadow-glow-brand), inset 0 1px 0 rgba(255, 255, 255, 0.9);
 }
 
-/* ── Red Pulse Alert Background ───────────────────────────────────────── */
+/* Shimmer Border for active elements */
+@keyframes shimmerBorder {
+  0%   { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.card-active-border::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(90deg, transparent, rgba(24, 72, 200, 0.4), transparent);
+  background-size: 200% 100%;
+  animation: shimmerBorder 2.5s linear infinite;
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+/* Active Node Pulse Ring animation */
+@keyframes nodeRipple {
+  0%   { transform: scale(1);   opacity: 0.6; }
+  100% { transform: scale(2.2); opacity: 0;   }
+}
+
+.node-active::after {
+  content: '';
+  position: absolute;
+  inset: -4px;
+  border-radius: 50%;
+  border: 2px solid var(--brand);
+  animation: nodeRipple 1.4s ease-out infinite;
+}
+
+/* Red Pulse Alert Background */
 @keyframes redPulse {
-  0%, 100% { background-color: rgba(255, 61, 90, 0.05); }
-  50% { background-color: rgba(255, 61, 90, 0.12); }
+  0%, 100% { background-color: rgba(185, 28, 28, 0.03); }
+  50% { background-color: rgba(185, 28, 28, 0.08); }
 }
 
 .red-pulse-bg {
@@ -226,15 +387,15 @@ input, textarea, select {
 
 /* ── Typography Helpers ───────────────────────────────────────────────── */
 .font-mono {
-  font-family: 'JetBrains Mono', monospace;
+  font-family: var(--font-mono);
 }
 
 .font-heading {
-  font-family: 'Syne', sans-serif;
+  font-family: var(--font-display);
 }
 
 .font-body {
-  font-family: 'DM Sans', sans-serif;
+  font-family: var(--font-body);
 }
 
 /* ── Layout Helpers ───────────────────────────────────────────────────── */
@@ -243,6 +404,8 @@ input, textarea, select {
   max-width: 1200px;
   margin: 0 auto;
   padding: 0 16px;
+  position: relative;
+  z-index: 10;
 }
 
 .flex-center {

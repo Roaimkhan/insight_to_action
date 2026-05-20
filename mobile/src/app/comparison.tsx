@@ -42,7 +42,7 @@ export default function ComparisonScreen() {
   // Entrance animations
   const headerOpacity = useSharedValue(0);
   const summaryOpacity = useSharedValue(0);
-  const summaryY = useSharedValue(20);
+  const summaryY = useSharedValue(24);
 
   useEffect(() => {
     headerOpacity.value = withTiming(1, { duration: anim.normal });
@@ -78,8 +78,8 @@ export default function ComparisonScreen() {
   }));
 
   const statusColors: Record<string, string> = {
-    complete: colors.accent.green,
-    failed: colors.accent.red,
+    complete: colors.accent.emerald,
+    failed: colors.accent.crimson,
     rolled_back: colors.accent.amber,
     pending: colors.text.muted,
     active: colors.accent.cyan,
@@ -90,8 +90,8 @@ export default function ComparisonScreen() {
       <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.scrollContent}>
         {/* Header */}
         <Animated.View style={[styles.header, headerStyle]}>
-          <Pressable onPress={handleBack}>
-            <Text style={styles.backText}>{'<'} RESULTS</Text>
+          <Pressable onPress={handleBack} style={styles.backBtn}>
+            <Text style={styles.backText}>← RESULTS</Text>
           </Pressable>
           <Badge label="COMPLETE" variant="success" />
         </Animated.View>
@@ -117,8 +117,8 @@ export default function ComparisonScreen() {
         {contradictions.length > 0 && (
           <View style={styles.section}>
             <View style={styles.sectionHeader}>
-              <View style={[styles.sectionAccent, { backgroundColor: colors.accent.green }]} />
-              <Text style={styles.sectionLabel}>CONTRADICTIONS</Text>
+              <View style={[styles.sectionAccent, { backgroundColor: colors.accent.emerald }]} />
+              <Text style={styles.sectionLabel}>RESOLVED CONTRADICTIONS</Text>
             </View>
             {contradictions.map((c) => (
               <View key={c.id} style={{ marginBottom: spacing.sm }}>
@@ -170,7 +170,7 @@ export default function ComparisonScreen() {
           style={styles.metricsButton}
           onPress={handleMetrics}
         >
-          <Text style={styles.metricsButtonText}>VIEW METRICS {'>'}</Text>
+          <Text style={styles.metricsButtonText}>VIEW IMPACT METRICS →</Text>
         </Pressable>
 
         <View style={{ height: spacing.xxl }} />
@@ -180,13 +180,14 @@ export default function ComparisonScreen() {
 }
 
 const styles = StyleSheet.create({
-  screen: { flex: 1, backgroundColor: colors.bg.primary },
-  scrollContent: { paddingHorizontal: spacing.md },
+  screen: { flex: 1, backgroundColor: colors.bg.root },
+  scrollContent: { paddingHorizontal: spacing.md, paddingTop: spacing.sm },
   header: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingVertical: spacing.md },
-  backText: { fontFamily: typography.mono.fontFamily, fontSize: typography.mono.fontSize, color: colors.accent.cyan },
+  backBtn: { paddingVertical: spacing.xs, paddingRight: spacing.md },
+  backText: { fontFamily: typography.mono.fontFamily, fontSize: 13, color: colors.accent.cyan, fontWeight: '700' },
   summary: { marginBottom: spacing.lg, paddingBottom: spacing.md, borderBottomWidth: 1, borderBottomColor: colors.border.subtle },
-  summaryTitle: { fontFamily: typography.h1.fontFamily, fontSize: typography.h1.fontSize, letterSpacing: typography.h1.letterSpacing, color: colors.text.primary },
-  summaryMeta: { fontFamily: typography.monoSm.fontFamily, fontSize: typography.monoSm.fontSize, color: colors.text.muted, marginTop: spacing.xs },
+  summaryTitle: { fontFamily: typography.h1.fontFamily, fontSize: 24, fontWeight: '700', letterSpacing: -0.5, color: colors.text.primary },
+  summaryMeta: { fontFamily: typography.monoSm.fontFamily, fontSize: 11, color: colors.text.muted, marginTop: spacing.xs },
   section: { marginBottom: spacing.lg },
   sectionHeader: { flexDirection: 'row', alignItems: 'center', marginBottom: spacing.md },
   sectionAccent: { width: 3, height: 16, backgroundColor: colors.accent.cyan, borderRadius: 2, marginRight: spacing.sm },
@@ -195,9 +196,9 @@ const styles = StyleSheet.create({
   timelineNode: { alignItems: 'center', width: 72, position: 'relative' },
   timelineLine: { position: 'absolute', left: -36, top: 14, width: 36, height: 2 },
   timelineCircle: { width: 28, height: 28, borderRadius: 14, borderWidth: 2, alignItems: 'center', justifyContent: 'center', marginBottom: spacing.xs },
-  timelineStep: { fontFamily: typography.monoBold.fontFamily, fontSize: 11 },
-  timelineLabel: { fontFamily: typography.monoSm.fontFamily, fontSize: 9, textAlign: 'center', textTransform: 'uppercase' },
-  timelineLatency: { fontFamily: typography.monoSm.fontFamily, fontSize: typography.monoSm.fontSize, color: colors.text.muted, marginTop: 2 },
-  metricsButton: { backgroundColor: colors.accent.cyan + '18', borderWidth: 1, borderColor: colors.accent.cyan + '60', borderRadius: radius.md, paddingVertical: spacing.md, alignItems: 'center', marginTop: spacing.md },
-  metricsButtonText: { fontFamily: typography.monoBold.fontFamily, fontSize: 14, color: colors.accent.cyan, letterSpacing: 1.5 },
+  timelineStep: { fontFamily: typography.monoBold.fontFamily, fontSize: 10, fontWeight: '700' },
+  timelineLabel: { fontFamily: typography.monoSm.fontFamily, fontSize: 8, textAlign: 'center', textTransform: 'uppercase' },
+  timelineLatency: { fontFamily: typography.monoSm.fontFamily, fontSize: 9, color: colors.text.muted, marginTop: 2 },
+  metricsButton: { backgroundColor: colors.accent.cyan, borderRadius: radius.md, paddingVertical: spacing.md, alignItems: 'center', marginTop: spacing.md },
+  metricsButtonText: { fontFamily: typography.monoBold.fontFamily, fontSize: 12, color: colors.text.inverse, letterSpacing: 1.5, fontWeight: '700' },
 });

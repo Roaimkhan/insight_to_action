@@ -2,7 +2,7 @@
 import React, { useEffect } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import Animated, {
-  useSharedValue, useAnimatedProps, useDerivedValue, withDelay, withTiming,
+  useSharedValue, useAnimatedProps, useDerivedValue, withDelay, withTiming, withSpring, SharedValue,
 } from 'react-native-reanimated';
 import Svg, { Circle } from 'react-native-svg';
 import { colors } from '../constants/colors';
@@ -35,7 +35,7 @@ const MetricGauge: React.FC<MetricGaugeProps> = ({
   const isGood = direction === 'down-good'
     ? value < maxValue * 0.5
     : value > maxValue * 0.5;
-  const gaugeColor = isGood ? colors.accent.green : colors.accent.amber;
+  const gaugeColor = isGood ? colors.accent.emerald : colors.accent.amber;
 
   useEffect(() => {
     progress.value = withDelay(animationDelay, withTiming(ratio, { duration: 1500 }));
@@ -79,7 +79,7 @@ const MetricGauge: React.FC<MetricGaugeProps> = ({
 };
 
 // Animated text component using Reanimated
-const AnimatedText: React.FC<{ value: Animated.SharedValue<string>; color: string }> = ({ value, color }) => {
+const AnimatedText: React.FC<{ value: SharedValue<string>; color: string }> = ({ value, color }) => {
   const [display, setDisplay] = React.useState('0');
 
   // Use a simple polling approach for the animated number
@@ -112,20 +112,24 @@ const MetricGaugeWithCountUp: React.FC<MetricGaugeProps> = (props) => {
   const [displayNum, setDisplayNum] = React.useState(0);
 
   const isGood = direction === 'down-good' ? value < maxValue * 0.5 : value > maxValue * 0.5;
-  const gaugeColor = isGood ? colors.accent.green : colors.accent.amber;
+  const gaugeColor = isGood ? colors.accent.emerald : colors.accent.amber;
 
   useEffect(() => {
     const timeout = setTimeout(() => {
-      progress.value = withTiming(ratio, { duration: 1500 });
+      progress.value = withSpring(ratio, { damping: 14, stiffness: 120 });
       // Count-up animation
       const startTime = Date.now();
       const dur = 1500;
       const interval = setInterval(() => {
         const elapsed = Date.now() - startTime;
         const t = Math.min(elapsed / dur, 1);
-        setDisplayNum(Math.round(t * value));
-        if (t >= 1) clearInterval(interval);
-      }, 50);
+        const easeOut = 1 - (1 - t) * (1 - t); // easeOutQuad for organic slowdown
+        setDisplayNum(Math.round(easeOut * value));
+        if (t >= 1) {
+          setDisplayNum(value);
+          clearInterval(interval);
+        }
+      }, 40);
       return () => clearInterval(interval);
     }, animationDelay);
     return () => clearTimeout(timeout);

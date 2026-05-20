@@ -1,7 +1,7 @@
 .comparison-screen {
   min-height: 100vh;
   position: relative;
-  background: #070B14;
+  background: transparent;
 }
 
 .comparison-content {
@@ -17,7 +17,7 @@
   justify-content: space-between;
   margin-bottom: 32px;
   padding-bottom: 16px;
-  border-bottom: 1px solid rgba(0, 229, 255, 0.08);
+  border-bottom: 1px solid var(--border-subtle);
 }
 
 .comparison-back-btn {
@@ -26,15 +26,17 @@
   gap: 8px;
   padding: 6px 12px;
   border-radius: 10px;
-  background: rgba(0, 229, 255, 0.06);
-  border: 1px solid rgba(0, 229, 255, 0.12);
+  background: var(--glass-1);
+  border: 1px solid var(--border-default);
   cursor: pointer;
   transition: all 0.15s ease;
+  color: var(--text-secondary);
 }
 
 .comparison-back-btn:hover {
-  background: rgba(0, 229, 255, 0.12);
-  border-color: rgba(0, 229, 255, 0.3);
+  background: var(--brand-light);
+  border-color: var(--border-brand);
+  color: var(--brand);
 }
 
 /* Timeline */
@@ -51,7 +53,7 @@
   flex-direction: column;
   align-items: center;
   position: relative;
-  min-width: 100px;
+  min-width: 120px;
   flex: 1;
 }
 
@@ -92,15 +94,21 @@
   align-items: center;
   gap: 10px;
   padding: 14px 32px;
-  background: #00E5FF;
-  color: #070B14;
-  font-family: 'Syne', sans-serif;
+  background: var(--brand);
+  color: var(--text-inverse);
+  font-family: var(--font-display);
   font-size: 15px;
   font-weight: 600;
   border-radius: 12px;
   border: none;
   cursor: pointer;
-  box-shadow: 0 0 16px rgba(0, 229, 255, 0.3);
+  box-shadow: var(--shadow-sm);
+  transition: all 0.2s ease;
+}
+
+.comparison-cta:hover {
+  background: var(--brand-hover);
+  box-shadow: var(--shadow-glow-brand);
 }
 
 @media (max-width: 640px) {
@@ -108,6 +116,6 @@
     padding: 12px 0;
   }
   .comparison-timeline__step {
-    min-width: 70px;
+    min-width: 80px;
   }
 }

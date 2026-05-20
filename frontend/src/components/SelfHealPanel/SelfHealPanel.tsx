@@ -13,8 +13,8 @@ interface SelfHealPanelProps {
 
 const tierColors: Record<number, string> = {
   1: colors.accent.amber,
-  2: colors.accent.orange,
-  3: colors.accent.red,
+  2: colors.accent.tangerine,
+  3: colors.accent.crimson,
 };
 
 const tierVariants: Record<number, 'warning' | 'fallback' | 'danger'> = {

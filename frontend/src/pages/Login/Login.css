@@ -1,0 +1,388 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   SupplyAI command center — Login Styles (v3.5)
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.login-screen {
+  position: relative;
+  min-height: 100vh;
+  width: 100vw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  /* Deep mesh backing */
+  background: 
+    radial-gradient(ellipse 60% 50% at 50% 30%, rgba(24, 72, 200, 0.05) 0%, transparent 60%),
+    var(--bg-base);
+}
+
+.login-container {
+  width: 100%;
+  max-width: 440px;
+  padding: 24px;
+  z-index: 10;
+}
+
+.login-card {
+  width: 100%;
+  border-radius: 24px;
+  padding: 48px 40px;
+  position: relative;
+  overflow: hidden;
+  background: var(--glass-2);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  box-shadow: 
+    0 4px 30px rgba(0, 0, 0, 0.03),
+    inset 0 1px 0 rgba(255, 255, 255, 0.9);
+  transition: box-shadow 0.4s ease, border-color 0.4s ease;
+}
+
+/* Cursor-Tracking Spotlight Glow effects */
+.card-spotlight-border {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  z-index: 2;
+  padding: 1.5px;
+  background: radial-gradient(
+    300px circle at var(--x, -1000px) var(--y, -1000px),
+    rgba(24, 72, 200, 0.28),
+    transparent 60%
+  );
+  -webkit-mask: 
+    linear-gradient(#fff 0 0) content-box, 
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  transition: opacity 0.5s ease;
+}
+
+.login-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  z-index: 1;
+  background: radial-gradient(
+    250px circle at var(--x, -1000px) var(--y, -1000px),
+    rgba(24, 72, 200, 0.03),
+    transparent 65%
+  );
+  transition: opacity 0.5s ease;
+}
+
+/* Secure Circuit Glow behind logo */
+.login-logo-container {
+  width: 60px;
+  height: 60px;
+  border-radius: 18px;
+  background: var(--brand-light);
+  border: 1px solid var(--border-brand);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 16px auto;
+  position: relative;
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.3s ease;
+}
+
+.login-logo-container:hover {
+  transform: rotate(5deg) scale(1.05);
+}
+
+.circuit-lines-glow {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle, rgba(24, 72, 200, 0.15) 0%, transparent 80%);
+  animation: logoPulse 3s infinite ease-in-out;
+  pointer-events: none;
+}
+
+@keyframes logoPulse {
+  0%, 100% { opacity: 0.5; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.2); }
+}
+
+.login-title {
+  font-size: 26px;
+  font-weight: 800;
+  color: var(--text-primary);
+  letter-spacing: -0.8px;
+  margin-bottom: 4px;
+}
+
+.login-subtitle {
+  font-size: 13px;
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+/* Floating label inputs architecture */
+.input-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.input-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.login-input {
+  width: 100%;
+  height: 52px;
+  background: var(--bg-sunken);
+  border: 1px solid var(--border-default);
+  border-radius: 14px;
+  padding: 16px 16px 0 16px; /* Room for float label */
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-primary);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.input-label {
+  position: absolute;
+  left: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-muted);
+  letter-spacing: 0.5px;
+  pointer-events: none;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  transform-origin: left top;
+}
+
+/* Float active state triggers */
+.login-input:focus ~ .input-label,
+.login-input:not(:placeholder-shown) ~ .input-label {
+  transform: translateY(-80%) scale(0.85);
+  color: var(--brand);
+  font-weight: 700;
+}
+
+.login-input:focus {
+  border-color: var(--border-brand);
+  background: var(--bg-surface);
+  box-shadow: 
+    0 0 0 4px rgba(24, 72, 200, 0.06),
+    var(--shadow-xs);
+}
+
+/* Input accent bar glow */
+.input-border-glow {
+  position: absolute;
+  left: 14px;
+  right: 14px;
+  bottom: 0;
+  height: 2px;
+  background: var(--brand);
+  opacity: 0;
+  transform: scaleX(0.3);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  pointer-events: none;
+  border-radius: 99px;
+}
+
+.login-input:focus ~ .input-border-glow {
+  opacity: 0.8;
+  transform: scaleX(1);
+}
+
+.error-message {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--danger);
+  background: var(--danger-light);
+  border: 1px solid var(--danger-border);
+  padding: 10px 14px;
+  border-radius: 10px;
+  text-align: center;
+  box-shadow: var(--shadow-xs);
+}
+
+/* Elite submit button */
+.login-submit-btn {
+  width: 100%;
+  height: 52px;
+  background: var(--brand);
+  color: var(--text-inverse);
+  border-radius: 14px;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 
+    0 4px 14px rgba(24, 72, 200, 0.22),
+    var(--shadow-md);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  position: relative;
+  cursor: pointer;
+}
+
+.login-submit-btn:hover {
+  background: var(--brand-hover);
+  box-shadow: 
+    0 6px 20px rgba(24, 72, 200, 0.32),
+    var(--shadow-lg);
+  transform: translateY(-1px);
+}
+
+.login-submit-btn:active {
+  transform: translateY(0);
+}
+
+.login-submit-btn.loading {
+  background: var(--brand-hover);
+  cursor: not-allowed;
+}
+
+.login-submit-btn.success {
+  background: var(--success);
+  box-shadow: 0 4px 16px rgba(4, 120, 87, 0.3);
+  cursor: not-allowed;
+}
+
+.btn-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.btn-arrow {
+  transition: transform 0.25s ease;
+}
+
+.login-submit-btn:hover .btn-arrow {
+  transform: translateX(4px);
+}
+
+.login-footer {
+  margin-top: 36px;
+  font-size: 10px;
+  color: var(--text-muted);
+  text-align: center;
+  letter-spacing: 1.5px;
+  font-weight: 500;
+}
+
+/* Spinner custom design */
+.spinner {
+  animation: rotate 2s linear infinite;
+  width: 18px;
+  height: 18px;
+}
+
+.spinner .path {
+  stroke: var(--text-inverse);
+  stroke-linecap: round;
+  animation: dash 1.5s ease-in-out infinite;
+}
+
+@keyframes rotate {
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes dash {
+  0% { stroke-dasharray: 1, 150; stroke-dashoffset: 0; }
+  50% { stroke-dasharray: 90, 150; stroke-dashoffset: -35; }
+  100% { stroke-dasharray: 90, 150; stroke-dashoffset: -124; }
+}
+
+/* Checkmark dynamic draw */
+.checkmark {
+  width: 18px;
+  height: 18px;
+  stroke-width: 4;
+  stroke: var(--text-inverse);
+  stroke-miterlimit: 10;
+}
+
+.checkmark-circle {
+  stroke-dasharray: 166;
+  stroke-dashoffset: 166;
+  stroke-width: 4;
+  stroke-miterlimit: 10;
+  stroke: var(--text-inverse);
+  fill: none;
+  animation: stroke 0.6s cubic-bezier(0.65, 0, 0.45, 1) forwards;
+}
+
+.checkmark-check {
+  transform-origin: 50% 50%;
+  stroke-dasharray: 48;
+  stroke-dashoffset: 48;
+  animation: stroke 0.3s cubic-bezier(0.65, 0, 0.45, 1) 0.5s forwards;
+}
+
+@keyframes stroke {
+  100% { stroke-dashoffset: 0; }
+}
+
+/* Validation styling classes */
+.login-input.valid {
+  border-color: var(--success);
+  box-shadow: 0 0 0 2px rgba(5, 150, 105, 0.1);
+}
+.login-input.valid ~ .input-label {
+  color: var(--success) !important;
+}
+.login-input.valid ~ .input-border-glow {
+  background: var(--success);
+  opacity: 0.6;
+  transform: scaleX(1);
+}
+
+.login-input.invalid {
+  border-color: var(--danger);
+  box-shadow: 0 0 0 2px rgba(220, 38, 38, 0.1);
+}
+.login-input.invalid ~ .input-label {
+  color: var(--danger) !important;
+}
+.login-input.invalid ~ .input-border-glow {
+  background: var(--danger);
+  opacity: 0.6;
+  transform: scaleX(1);
+}
+
+/* ── Mobile Responsive Overrides ─────────────────────────────────────── */
+@media (max-width: 480px) {
+  .login-container {
+    padding: 16px;
+  }
+  .login-card {
+    padding: 36px 24px;
+    border-radius: 20px;
+  }
+  .login-title {
+    font-size: 22px;
+  }
+  .login-subtitle {
+    font-size: 12px;
+  }
+  .login-input {
+    height: 48px;
+    font-size: 13px;
+  }
+  .login-submit-btn {
+    height: 48px;
+    font-size: 12px;
+  }
+}

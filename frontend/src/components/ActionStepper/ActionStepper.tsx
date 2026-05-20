@@ -27,8 +27,8 @@ interface ActionStepperProps {
 const statusBorderMap: Record<StepStatus, string> = {
   pending:     colors.text.muted,
   active:      colors.accent.cyan,
-  complete:    colors.accent.green,
-  failed:      colors.accent.red,
+  complete:    colors.accent.emerald,
+  failed:      colors.accent.crimson,
   rolled_back: colors.accent.amber,
 };
 
@@ -54,12 +54,9 @@ const StepItem = React.memo<{ step: ActionStep; index: number }>(({ step, index 
 
   return (
     <motion.div
-      className="ncc-step-item"
+      className={`ncc-step-item ${step.status}`}
       style={{
-        borderLeftWidth: 3,
-        borderLeftStyle: 'solid',
-        borderLeftColor: statusBorderMap[step.status],
-        paddingLeft: spacing.md,
+        paddingLeft: '34px',
         paddingTop: spacing.sm,
         paddingBottom: spacing.sm,
         position: 'relative',
@@ -67,12 +64,65 @@ const StepItem = React.memo<{ step: ActionStep; index: number }>(({ step, index 
       variants={fadeUpVariant}
       custom={index * 80}
     >
-      <div style={{ display: 'flex', alignItems: 'center', gap: spacing.sm }}>
-        <IconComp size={16} />
+      {/* Fiber-optic signal track line */}
+      <div className="stepper-track-container" style={{
+        position: 'absolute',
+        top: 0,
+        bottom: 0,
+        left: 12,
+        width: 4,
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        zIndex: 1,
+      }}>
+        {/* Connection link line */}
+        <div className="stepper-track-line" style={{
+          width: '2px',
+          height: '100%',
+          background: step.status === 'complete' ? 'rgba(16, 185, 129, 0.22)' :
+                      step.status === 'active' ? 'rgba(6, 182, 212, 0.22)' :
+                      'rgba(0, 0, 0, 0.06)',
+          position: 'relative',
+          overflow: 'hidden',
+        }}>
+          {step.status === 'active' && (
+            <div className="stepper-signal-pulse active" />
+          )}
+          {step.status === 'complete' && (
+            <div className="stepper-signal-pulse complete" />
+          )}
+        </div>
+
+        {/* Tactical target node indicator dot */}
+        <div className={`stepper-node-dot ${step.status}`} style={{
+          width: '9px',
+          height: '9px',
+          borderRadius: '50%',
+          background: statusBorderMap[step.status],
+          position: 'absolute',
+          top: '18px',
+          boxShadow: step.status === 'active' ? `0 0 10px ${colors.accent.cyan}` :
+                     step.status === 'complete' ? `0 0 8px ${colors.accent.emerald}` :
+                     'none',
+          border: '1.5px solid var(--bg-surface)',
+          zIndex: 4,
+        }}>
+          {step.status === 'active' && (
+            <>
+              <div className="ripple-ring ring1" />
+              <div className="ripple-ring ring2" />
+            </>
+          )}
+        </div>
+      </div>
+
+      <div style={{ display: 'flex', alignItems: 'center', gap: spacing.sm, position: 'relative', zIndex: 2 }}>
+        <IconComp size={15} />
         <span style={{
           fontFamily: typography.h3.fontFamily,
           fontSize: typography.h3.fontSize,
-          fontWeight: typography.h3.fontWeight,
+          fontWeight: 700,
           color: colors.text.primary,
           flex: 1,
         }}>
@@ -87,8 +137,10 @@ const StepItem = React.memo<{ step: ActionStep; index: number }>(({ step, index 
           fontSize: typography.small.fontSize,
           color: colors.text.secondary,
           marginTop: spacing.xs,
-          paddingLeft: 24,
+          paddingLeft: 20,
           lineHeight: typography.small.lineHeight,
+          position: 'relative',
+          zIndex: 2,
         }}>
           {step.description}
         </p>
@@ -97,8 +149,10 @@ const StepItem = React.memo<{ step: ActionStep; index: number }>(({ step, index 
       <div style={{
         display: 'flex',
         gap: spacing.md,
-        paddingLeft: 24,
+        paddingLeft: 20,
         marginTop: spacing.xs,
+        position: 'relative',
+        zIndex: 2,
       }}>
         {step.timestamp && (
           <span style={{

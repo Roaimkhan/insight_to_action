@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { colors } from '../../constants/colors';
 import { typography } from '../../constants/typography';
 import { spacing, radius } from '../../constants/spacing';
-import { staggerContainer, fadeUpVariant } from '../../constants/animation';
+import { staggerContainer, fadeUpVariant, pageEntranceVariant, sectionStaggerContainer, sectionItemVariant, buttonHoverVariant, pulseGlowVariant } from '../../constants/animation';
 import { useAgentStore } from '../../store/agentStore';
 import {
   Card,
@@ -19,8 +19,8 @@ import type { MetricRow } from '../../types/agent';
 import './Comparison.css';
 
 const stepStatusColors: Record<string, string> = {
-  complete: colors.accent.green,
-  failed: colors.accent.red,
+  complete: colors.accent.emerald,
+  failed: colors.accent.crimson,
   rolled_back: colors.accent.amber,
   active: colors.accent.cyan,
   pending: colors.text.muted,
@@ -60,8 +60,29 @@ const Comparison: React.FC = () => {
   const scenarioLabel = scenarioId ? scenarioId.replace(/_/g, ' ').toUpperCase() : 'SCENARIO';
 
   return (
-    <div className="comparison-screen">
+    <motion.div 
+      className="comparison-screen"
+      initial="hidden"
+      animate="visible"
+      variants={pageEntranceVariant}
+    >
       <div className="scan-line" style={{ opacity: 0.06 }} />
+      <motion.div 
+        style={{
+          position: 'absolute',
+          top: '30%',
+          right: '-10%',
+          width: '250px',
+          height: '250px',
+          background: 'radial-gradient(circle, rgba(0, 217, 255, 0.1) 0%, rgba(0, 217, 255, 0) 70%)',
+          borderRadius: '50%',
+          filter: 'blur(40px)',
+          pointerEvents: 'none',
+          zIndex: 0,
+        }}
+        animate="animate"
+        variants={pulseGlowVariant}
+      />
 
       <div className="comparison-content screen-container">
         {/* Header */}
@@ -177,7 +198,7 @@ const Comparison: React.FC = () => {
                           backgroundColor: step.status === 'complete' ? statusColor : 'transparent',
                           boxShadow: `0 0 8px ${statusColor}44`,
                         }}>
-                          {step.status === 'complete' && <CompleteIcon size={12} color={colors.bg.primary} />}
+                          {step.status === 'complete' && <CompleteIcon size={12} color={colors.bg.surface} />}
                           {step.status === 'rolled_back' && (
                             <span style={{ fontSize: 10, color: statusColor }}>↩</span>
                           )}
@@ -223,15 +244,16 @@ const Comparison: React.FC = () => {
           <motion.button
             className="comparison-cta"
             onClick={handleViewMetrics}
-            whileHover={{ scale: 1.02, boxShadow: `0 0 24px rgba(0, 229, 255, 0.4)` }}
-            whileTap={{ scale: 0.98 }}
+            variants={buttonHoverVariant}
+            whileHover="hover"
+            whileTap="tap"
           >
             <span>View Metrics</span>
             <ArrowRightIcon size={16} color={colors.text.inverse} />
           </motion.button>
         </motion.div>
       </div>
-    </div>
+    </motion.div>
   );
 };
 

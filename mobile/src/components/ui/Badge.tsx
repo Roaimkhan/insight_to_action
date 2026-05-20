@@ -12,11 +12,11 @@ interface BadgeProps {
 }
 
 const variantColors = {
-  success: { bg: 'rgba(0,255,135,0.12)', text: colors.accent.green, border: colors.border.success },
-  warning: { bg: 'rgba(255,176,32,0.12)', text: colors.accent.amber, border: colors.border.warning },
-  danger:  { bg: 'rgba(255,61,90,0.12)',  text: colors.accent.red,   border: colors.border.danger },
-  info:    { bg: 'rgba(0,229,255,0.12)',   text: colors.accent.cyan,  border: colors.border.active },
-  default: { bg: 'rgba(61,90,122,0.12)',   text: colors.text.muted,   border: colors.border.subtle },
+  success: { bg: colors.accent.emeraldLight, text: colors.accent.emerald, border: colors.border.emerald },
+  warning: { bg: colors.accent.amberLight, text: colors.accent.amber, border: colors.border.amber },
+  danger:  { bg: colors.accent.crimsonLight, text: colors.accent.crimson, border: colors.border.crimson },
+  info:    { bg: colors.accent.cyanLight, text: colors.accent.cyan, border: colors.border.cyan },
+  default: { bg: colors.bg.sunken, text: colors.text.secondary, border: colors.border.subtle },
 };
 
 const Badge: React.FC<BadgeProps> = ({ label, variant, style }) => {

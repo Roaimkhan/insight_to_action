@@ -47,11 +47,11 @@ const ContradictionCard: React.FC<ContradictionCardProps> = ({ contradiction }) 
   }));
 
   const borderAnim = useAnimatedStyle(() => ({
-    borderColor: isActive ? `rgba(255,61,90,${borderOpacity.value * 0.7})` : colors.border.success,
+    borderColor: isActive ? `rgba(220, 38, 38, ${borderOpacity.value * 0.7})` : colors.border.emerald,
   }));
 
-  const accent = isActive ? colors.accent.red : colors.accent.green;
-  const bgTint = isActive ? 'rgba(255,61,90,0.06)' : 'rgba(0,255,135,0.04)';
+  const accent = isActive ? colors.accent.crimson : colors.accent.emerald;
+  const bgTint = isActive ? colors.accent.crimsonLight : colors.accent.emeraldLight;
 
   return (
     <Animated.View style={containerAnim}>
@@ -66,14 +66,14 @@ const ContradictionCard: React.FC<ContradictionCardProps> = ({ contradiction }) 
         <View style={styles.sourcesRow}>
           <View style={styles.sourceBox}>
             <Text style={styles.sourceType}>{contradiction.source_a.type.toUpperCase()}</Text>
-            <Text style={[styles.sourceScore, { color: contradiction.source_a.credibility < 0.5 ? colors.accent.red : colors.text.primary }]}>
+            <Text style={[styles.sourceScore, { color: contradiction.source_a.credibility < 0.5 ? colors.accent.crimson : colors.text.primary }]}>
               {contradiction.source_a.credibility.toFixed(2)}
             </Text>
           </View>
           <Text style={styles.vsText}>VS</Text>
           <View style={styles.sourceBox}>
             <Text style={styles.sourceType}>{contradiction.source_b.type.toUpperCase()}</Text>
-            <Text style={[styles.sourceScore, { color: contradiction.source_b.credibility < 0.5 ? colors.accent.red : colors.text.primary }]}>
+            <Text style={[styles.sourceScore, { color: contradiction.source_b.credibility < 0.5 ? colors.accent.crimson : colors.text.primary }]}>
               {contradiction.source_b.credibility.toFixed(2)}
             </Text>
           </View>

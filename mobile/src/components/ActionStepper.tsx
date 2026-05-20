@@ -24,9 +24,59 @@ interface ActionStepperProps {
 const borderColors: Record<StepStatus, string> = {
   pending:     colors.text.muted,
   active:      colors.accent.cyan,
-  complete:    colors.accent.green,
-  failed:      colors.accent.red,
+  complete:    colors.accent.emerald,
+  failed:      colors.accent.crimson,
   rolled_back: colors.accent.amber,
+};
+
+// ── Active Ripple Icon Component ─────────────────────────────────────
+const ActiveIcon: React.FC<{ color: string }> = ({ color }) => {
+  const scale = useSharedValue(1);
+  const opacity = useSharedValue(0.6);
+
+  useEffect(() => {
+    scale.value = withRepeat(
+      withSequence(
+        withTiming(1.6, { duration: 1000 }),
+        withTiming(1, { duration: 1000 })
+      ),
+      -1,
+      false
+    );
+    opacity.value = withRepeat(
+      withSequence(
+        withTiming(0.2, { duration: 1000 }),
+        withTiming(0.8, { duration: 1000 })
+      ),
+      -1,
+      false
+    );
+  }, []);
+
+  const rippleStyle = useAnimatedStyle(() => ({
+    transform: [{ scale: scale.value }],
+    opacity: opacity.value,
+  }));
+
+  return (
+    <View style={{ width: 20, height: 20, position: 'relative', alignItems: 'center', justifyContent: 'center' }}>
+      <Animated.View style={[{
+        position: 'absolute',
+        width: 14,
+        height: 14,
+        borderRadius: 7,
+        borderWidth: 1.5,
+        borderColor: color,
+        backgroundColor: color + '22',
+      }, rippleStyle]} />
+      <View style={{
+        width: 8,
+        height: 8,
+        borderRadius: 4,
+        backgroundColor: color,
+      }} />
+    </View>
+  );
 };
 
 // ── Status Icons (SVG) ───────────────────────────────────────────────
@@ -42,12 +92,7 @@ const StatusIcon: React.FC<{ status: StepStatus }> = React.memo(({ status }) => 
         </Svg>
       );
     case 'active':
-      return (
-        <Svg width={size} height={size} viewBox="0 0 20 20">
-          <Circle cx="10" cy="10" r="7" stroke={color} strokeWidth={1.5} fill="none" />
-          <Circle cx="10" cy="10" r="3" fill={color} />
-        </Svg>
-      );
+      return <ActiveIcon color={color} />;
     case 'complete':
       return (
         <Svg width={size} height={size} viewBox="0 0 20 20">
@@ -122,9 +167,9 @@ const StepRow: React.FC<{ action: Action; index: number; isLast: boolean }> = Re
                 {
                   backgroundColor:
                     action.status === 'complete'
-                      ? colors.accent.green
+                      ? colors.accent.emerald
                       : action.status === 'failed'
-                      ? colors.accent.red
+                      ? colors.accent.crimson
                       : colors.text.muted,
                 },
               ]}
@@ -211,7 +256,7 @@ const styles = StyleSheet.create({
   },
   activeGlow: {
     ...StyleSheet.absoluteFillObject,
-    backgroundColor: 'rgba(0,229,255,0.05)',
+    backgroundColor: colors.accent.cyanGlow,
     borderRadius: radius.sm,
   },
   stepHeader: {
@@ -238,13 +283,13 @@ const styles = StyleSheet.create({
   latency: {
     fontFamily: typography.monoSm.fontFamily,
     fontSize: typography.monoSm.fontSize,
-    color: colors.accent.green,
+    color: colors.accent.emerald,
     marginTop: spacing.xs,
   },
   failedText: {
     fontFamily: typography.monoSm.fontFamily,
     fontSize: typography.monoSm.fontSize,
-    color: colors.accent.red,
+    color: colors.accent.crimson,
     marginTop: spacing.xs,
     letterSpacing: 1,
   },

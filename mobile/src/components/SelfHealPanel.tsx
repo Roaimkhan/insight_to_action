@@ -13,8 +13,8 @@ interface SelfHealPanelProps { event: HealEvent; }
 
 const tierColors: Record<1 | 2 | 3, string> = {
   1: colors.accent.amber,
-  2: colors.accent.orange,
-  3: colors.accent.red,
+  2: colors.accent.tangerine,
+  3: colors.accent.crimson,
 };
 
 const statusLabels: Record<HealEvent['status'], string> = {
@@ -29,29 +29,45 @@ const SelfHealPanel: React.FC<SelfHealPanelProps> = ({ event }) => {
   const translateY = useSharedValue(200);
   const borderPulse = useSharedValue(1);
   const progressWidth = useSharedValue(0);
+  const cardScale = useSharedValue(1);
   const tierColor = tierColors[event.tier];
 
   useEffect(() => {
     if (event.status === 'success') {
       translateY.value = withSpring(200, { damping: 18, stiffness: 200 });
+      cardScale.value = withTiming(1, { duration: 300 });
     } else {
       translateY.value = withSpring(0, { damping: 18, stiffness: 200 });
       borderPulse.value = withRepeat(
         withSequence(withTiming(0.4, { duration: 600 }), withTiming(1, { duration: 600 })),
         -1, false
       );
+      cardScale.value = withRepeat(
+        withSequence(withTiming(1.02, { duration: 800 }), withTiming(1.00, { duration: 800 })),
+        -1, false
+      );
     }
     if (event.status === 'retrying') {
-      progressWidth.value = withTiming(100, { duration: 3000 });
+      progressWidth.value = 0;
+      progressWidth.value = withTiming(100, { duration: 1500 });
     }
-  }, [event.status]);
+  }, [event.status, event.tier]);
 
   const panelStyle = useAnimatedStyle(() => ({
-    transform: [{ translateY: translateY.value }],
+    transform: [{ translateY: translateY.value }, { scale: cardScale.value }],
+    shadowColor: tierColor,
+    shadowOffset: { width: 0, height: 8 },
+    shadowOpacity: 0.12 + borderPulse.value * 0.12,
+    shadowRadius: 16,
+    elevation: 8,
   }));
+
   const borderStyle = useAnimatedStyle(() => ({
-    borderColor: tierColor, borderWidth: 1.5, opacity: 0.5 + borderPulse.value * 0.5,
+    borderColor: tierColor,
+    borderWidth: 1.5,
+    opacity: 0.5 + borderPulse.value * 0.5,
   }));
+
   const progressStyle = useAnimatedStyle(() => ({
     width: `${progressWidth.value}%`,
   }));
@@ -90,7 +106,7 @@ const styles = StyleSheet.create({
   statusText: { fontFamily: typography.monoSm.fontFamily, fontSize: typography.monoSm.fontSize },
   detail: { fontFamily: typography.mono.fontFamily, fontSize: typography.mono.fontSize, color: colors.text.secondary, marginBottom: spacing.sm },
   progressSection: { gap: spacing.xs },
-  progressTrack: { height: 3, backgroundColor: colors.bg.primary, borderRadius: radius.full, overflow: 'hidden' },
+  progressTrack: { height: 3, backgroundColor: colors.bg.sunken, borderRadius: radius.full, overflow: 'hidden' },
   progressFill: { height: '100%', borderRadius: radius.full },
   attemptText: { fontFamily: typography.monoSm.fontFamily, fontSize: typography.monoSm.fontSize, color: colors.text.muted },
 });

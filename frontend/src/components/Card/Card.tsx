@@ -2,6 +2,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { colors } from '../../constants/colors';
 import { spacing, radius } from '../../constants/spacing';
+import { cardHoverVariant } from '../../constants/animation';
 import './Card.css';
 
 interface CardProps {
@@ -15,27 +16,27 @@ interface CardProps {
 }
 
 const borderColorMap: Record<string, string> = {
-  default: colors.border.subtle,
-  active:  colors.border.active,
-  danger:  colors.border.danger,
-  success: colors.border.success,
-  warning: colors.border.warning,
+  default: 'var(--border-subtle)',
+  active:  'var(--border-brand)',
+  danger:  'var(--danger)',
+  success: 'var(--success)',
+  warning: 'var(--warning)',
 };
 
 const statusBorderMap: Record<string, string> = {
-  pending:     colors.text.muted,
-  active:      colors.accent.cyan,
-  complete:    colors.accent.green,
-  failed:      colors.accent.red,
-  rolled_back: colors.accent.amber,
+  pending:     'var(--text-muted)',
+  active:      'var(--brand)',
+  complete:    'var(--success)',
+  failed:      'var(--danger)',
+  rolled_back: 'var(--warning)',
 };
 
 const glowColorMap: Record<string, string> = {
-  default: `0 0 12px rgba(0, 229, 255, 0.15)`,
-  active:  `0 0 16px rgba(0, 229, 255, 0.55), 0 0 6px rgba(0, 229, 255, 0.25)`,
-  danger:  `0 0 16px rgba(255, 61, 90, 0.55), 0 0 6px rgba(255, 61, 90, 0.25)`,
-  success: `0 0 12px rgba(0, 255, 135, 0.35), 0 0 4px rgba(0, 255, 135, 0.15)`,
-  warning: `0 0 12px rgba(255, 176, 32, 0.35), 0 0 4px rgba(255, 176, 32, 0.15)`,
+  default: `var(--shadow-sm)`,
+  active:  `var(--shadow-glow-brand)`,
+  danger:  `var(--shadow-glow-danger)`,
+  success: `var(--shadow-glow-success)`,
+  warning: `0 0 32px rgba(180, 83, 9, 0.18)`,
 };
 
 const Card = React.memo<CardProps>(({
@@ -47,8 +48,23 @@ const Card = React.memo<CardProps>(({
   delay = 0,
   onClick,
 }) => {
+  const cardRef = React.useRef<HTMLDivElement>(null);
+  const [mousePos, setMousePos] = React.useState({ x: -1000, y: -1000 });
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!cardRef.current) return;
+    const rect = cardRef.current.getBoundingClientRect();
+    setMousePos({
+      x: e.clientX - rect.left,
+      y: e.clientY - rect.top,
+    });
+  };
+
+  const handleMouseLeave = () => {
+    setMousePos({ x: -1000, y: -1000 });
+  };
+
   const style: React.CSSProperties = {
-    backgroundColor: colors.bg.secondary,
     borderRadius: radius.lg,
     padding: spacing.md,
     border: `1px solid ${borderColorMap[variant]}`,
@@ -64,8 +80,15 @@ const Card = React.memo<CardProps>(({
 
   return (
     <motion.div
-      className={`ncc-card ${className}`}
-      style={style}
+      ref={cardRef}
+      className={`ncc-card glass ${className}`}
+      style={{
+        ...style,
+        ['--x' as any]: `${mousePos.x}px`,
+        ['--y' as any]: `${mousePos.y}px`,
+      }}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{
@@ -75,13 +98,11 @@ const Card = React.memo<CardProps>(({
         damping: 20,
         stiffness: 180,
       }}
-      whileHover={onClick ? {
-        borderColor: colors.border.active,
-        boxShadow: glowColorMap.active,
-        transition: { duration: 0.15 },
-      } : undefined}
+      whileHover={onClick ? cardHoverVariant.hover : undefined}
       onClick={onClick}
     >
+      {/* Dynamic light accent spotlight border */}
+      <div className="card-spotlight-border" />
       {children}
     </motion.div>
   );

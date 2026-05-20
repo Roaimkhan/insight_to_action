@@ -25,22 +25,23 @@ export default function RootLayout() {
     return (
       <View style={styles.loading}>
         <ActivityIndicator size="large" color={colors.accent.cyan} />
-        <Text style={styles.loadingText}>INITIALIZING</Text>
-        <StatusBar style="light" translucent backgroundColor="transparent" />
+        <Text style={styles.loadingText}>INITIALIZING COMMAND CENTER</Text>
+        <StatusBar style="dark" translucent backgroundColor="transparent" />
       </View>
     );
   }
 
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
-      <StatusBar style="light" translucent backgroundColor="transparent" />
+      <StatusBar style="dark" translucent backgroundColor="transparent" />
       <Stack
         screenOptions={{
           headerShown: false,
-          contentStyle: { backgroundColor: colors.bg.primary },
+          contentStyle: { backgroundColor: colors.bg.root },
           animation: 'slide_from_right',
         }}
       >
+        <Stack.Screen name="(auth)/login" options={{ animation: 'fade' }} />
         <Stack.Screen name="index" />
         <Stack.Screen name="agent" options={{ animation: 'slide_from_bottom' }} />
         <Stack.Screen name="comparison" options={{ animation: 'fade' }} />
@@ -53,15 +54,16 @@ export default function RootLayout() {
 const styles = StyleSheet.create({
   loading: {
     flex: 1,
-    backgroundColor: colors.bg.primary,
+    backgroundColor: colors.bg.root,
     alignItems: 'center',
     justifyContent: 'center',
     gap: 16,
   },
   loadingText: {
     fontFamily: 'System',
-    fontSize: 12,
-    letterSpacing: 3,
+    fontSize: 10,
+    letterSpacing: 2,
     color: colors.text.muted,
+    fontWeight: '700',
   },
 });

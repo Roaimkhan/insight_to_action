@@ -33,7 +33,7 @@ const SourceCard = React.memo<SourceCardProps>(({ source, animationDelay = 0, is
   if (isLoading) {
     return (
       <motion.div
-        className="ncc-source-card ncc-source-card--loading"
+        className="ncc-source-card glass ncc-source-card--loading"
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: animationDelay * 0.001, duration: 0.3, type: 'spring', damping: 20, stiffness: 180 }}
@@ -50,14 +50,14 @@ const SourceCard = React.memo<SourceCardProps>(({ source, animationDelay = 0, is
 
   return (
     <motion.div
-      className={`ncc-source-card ${isStale ? 'ncc-source-card--stale' : ''}`}
+      className={`ncc-source-card glass ${isStale ? 'ncc-source-card--stale' : ''}`}
       initial={{ opacity: 0, y: 30 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: animationDelay * 0.001, duration: 0.3, type: 'spring', damping: 20, stiffness: 180 }}
     >
       <div className="ncc-source-card__header">
         <div style={{ display: 'flex', alignItems: 'center', gap: spacing.sm, flex: 1, minWidth: 0 }}>
-          <IconComp size={20} color={isStale ? colors.accent.amber : colors.accent.cyan} />
+          <IconComp size={20} color={isStale ? 'var(--warning)' : 'var(--brand)'} />
           <div style={{ flex: 1, minWidth: 0 }}>
             <div style={{
               fontFamily: typography.h3.fontFamily,
@@ -88,7 +88,7 @@ const SourceCard = React.memo<SourceCardProps>(({ source, animationDelay = 0, is
       <div style={{ marginTop: spacing.sm }}>
         <CredibilityBar
           score={source.credibility_score}
-          label="Credibility"
+          label="Credibility Score"
           height={4}
         />
       </div>

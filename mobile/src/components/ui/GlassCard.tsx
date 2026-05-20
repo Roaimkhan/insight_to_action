@@ -44,7 +44,7 @@ const GlassCard: React.FC<GlassCardProps> = ({ children, style, glowColor, inten
 
 const styles = StyleSheet.create({
   card: {
-    backgroundColor: colors.bg.secondary,
+    backgroundColor: colors.bg.glass,
     borderRadius: radius.lg,
     borderWidth: 1,
     borderColor: colors.border.subtle,

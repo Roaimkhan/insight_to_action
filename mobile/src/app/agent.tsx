@@ -58,8 +58,36 @@ export default function AgentScreen() {
   const [elapsedMs, setElapsedLocal] = useState(0);
 
   // Banner animation
-  const bannerY = useSharedValue(-60);
+  const bannerY = useSharedValue(-100);
   const contentDim = useSharedValue(1);
+
+  // Entrance animations for PHASE 1
+  const headerOpacity = useSharedValue(0);
+  const headerTranslateY = useSharedValue(-20);
+
+  const sourcesSectionOpacity = useSharedValue(0);
+  const sourcesSectionTranslateY = useSharedValue(16);
+
+  const actionChainSectionOpacity = useSharedValue(0);
+  const actionChainSectionTranslateY = useSharedValue(16);
+
+  const llmSectionOpacity = useSharedValue(0);
+  const llmSectionTranslateY = useSharedValue(16);
+
+  useEffect(() => {
+    // Trigger entrance animations on mount
+    headerOpacity.value = withTiming(1, { duration: anim.normal });
+    headerTranslateY.value = withSpring(0, anim.spring);
+
+    sourcesSectionOpacity.value = withDelay(150, withTiming(1, { duration: anim.normal }));
+    sourcesSectionTranslateY.value = withDelay(150, withSpring(0, anim.spring));
+
+    actionChainSectionOpacity.value = withDelay(300, withTiming(1, { duration: anim.normal }));
+    actionChainSectionTranslateY.value = withDelay(300, withSpring(0, anim.spring));
+
+    llmSectionOpacity.value = withDelay(450, withTiming(1, { duration: anim.normal }));
+    llmSectionTranslateY.value = withDelay(450, withSpring(0, anim.spring));
+  }, []);
 
   // Start mock stream
   useEffect(() => {
@@ -71,7 +99,9 @@ export default function AgentScreen() {
     }, 100);
 
     // Set before state
-    setBeforeState(scenarioBeforeStates[scenarioId]);
+    if (scenarioBeforeStates[scenarioId]) {
+      setBeforeState(scenarioBeforeStates[scenarioId]);
+    }
 
     const cleanup = startMockStream(scenarioId, {
       node_start: (e) => {
@@ -108,6 +138,7 @@ export default function AgentScreen() {
         setHealEvent({ tier: e.tier, detail: e.detail, attempt: 1, maxAttempts: 3, status: 'retrying' });
         Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
         addAuditEntry({ timestamp_ms: Date.now() - startTimeRef.current, event: 'self_heal', detail: `Tier ${e.tier}: ${e.detail}`, status: 'warning' });
+        
         // Auto-resolve after 1.5s
         setTimeout(() => {
           setHealEvent({ tier: e.tier, detail: 'Recovery successful', status: 'success', attempt: 2, maxAttempts: 3 });
@@ -119,18 +150,23 @@ export default function AgentScreen() {
       complete: (e) => {
         setStatus('complete');
         setMetrics(e.metrics);
-        setAfterState(scenarioAfterStates[scenarioId]);
+        if (scenarioAfterStates[scenarioId]) {
+          setAfterState(scenarioAfterStates[scenarioId]);
+        }
+        
         // Resolve contradictions
         contradictions.forEach((c) => resolveContradiction(c.id));
         Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
         addAuditEntry({ timestamp_ms: Date.now() - startTimeRef.current, event: 'complete', detail: `${e.metrics.steps_completed}/${e.metrics.steps_total} steps`, status: 'success' });
+        
         if (timerRef.current) clearInterval(timerRef.current);
+        
         // Show banner, dim content, then navigate
-        contentDim.value = withTiming(0.5, { duration: 500 });
+        contentDim.value = withTiming(0.4, { duration: 500 });
         bannerY.value = withSpring(0, { damping: 20, stiffness: 180 });
         setTimeout(() => {
           router.replace('/comparison');
-        }, 2000);
+        }, 2200);
       },
     });
 
@@ -148,15 +184,33 @@ export default function AgentScreen() {
     opacity: contentDim.value,
   }));
 
+  const headerStyle = useAnimatedStyle(() => ({
+    opacity: headerOpacity.value,
+    transform: [{ translateY: headerTranslateY.value }],
+  }));
+
+  const sourcesSectionStyle = useAnimatedStyle(() => ({
+    opacity: sourcesSectionOpacity.value,
+    transform: [{ translateY: sourcesSectionTranslateY.value }],
+  }));
+
+  const actionChainSectionStyle = useAnimatedStyle(() => ({
+    opacity: actionChainSectionOpacity.value,
+    transform: [{ translateY: actionChainSectionTranslateY.value }],
+  }));
+
+  const llmSectionStyle = useAnimatedStyle(() => ({
+    opacity: llmSectionOpacity.value,
+    transform: [{ translateY: llmSectionTranslateY.value }],
+  }));
+
   const handleBack = useCallback(() => {
     cleanupRef.current?.();
     if (timerRef.current) clearInterval(timerRef.current);
     router.back();
   }, [router]);
 
-  const statusColor = status === 'running' ? colors.accent.cyan : status === 'complete' ? colors.accent.green : colors.accent.red;
-
-  // Placeholder source slots
+  const statusColor = status === 'running' ? colors.accent.cyan : status === 'complete' ? colors.accent.emerald : colors.accent.crimson;
   const sourceSlots = ['pdf', 'csv', 'web', 'table', 'realtime'];
 
   return (
@@ -165,17 +219,19 @@ export default function AgentScreen() {
 
       {/* Completion banner */}
       <Animated.View style={[styles.banner, bannerStyle]}>
-        <Text style={styles.bannerText}>CHAIN COMPLETE</Text>
+        <Text style={styles.bannerText}>✓ OPERATION CHAIN COMPLETE</Text>
       </Animated.View>
 
       {/* Header */}
-      <View style={styles.header}>
-        <Pressable onPress={handleBack} style={styles.backBtn}>
-          <Text style={styles.backText}>{'<'} BACK</Text>
-        </Pressable>
-        <Text style={styles.headerTitle}>AGENT {status === 'running' ? 'RUNNING' : status === 'complete' ? 'COMPLETE' : 'IDLE'}</Text>
-        <PulsingDot color={statusColor} size={8} speed={status === 'running' ? 'fast' : 'normal'} />
-      </View>
+      <Animated.View style={headerStyle}>
+        <View style={styles.header}>
+          <Pressable onPress={handleBack} style={styles.backBtn}>
+            <Text style={styles.backText}>← BACK</Text>
+          </Pressable>
+          <Text style={styles.headerTitle}>AGENT {status === 'running' ? 'RUNNING' : status === 'complete' ? 'COMPLETE' : 'IDLE'}</Text>
+          <PulsingDot color={statusColor} size={8} speed={status === 'running' ? 'fast' : 'normal'} />
+        </View>
+      </Animated.View>
 
       {/* Node Badge */}
       {currentNode && <NodeBadge node={currentNode} elapsedMs={elapsedMs} />}
@@ -184,7 +240,8 @@ export default function AgentScreen() {
         <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.content}>
 
           {/* Source Ingestion Section */}
-          <View style={styles.section}>
+          <Animated.View style={sourcesSectionStyle}>
+            <View style={styles.section}>
             <View style={styles.sectionHeader}>
               <View style={styles.sectionAccent} />
               <Text style={styles.sectionLabel}>SOURCE INGESTION</Text>
@@ -201,18 +258,19 @@ export default function AgentScreen() {
                   <SourceCard
                     source={{ source_id: `placeholder_${type}`, source_type: type as any, credibility_score: 0, freshness: 'fresh', domain_hints: [], ingested_at: '' }}
                     isLoading
-                    animationDelay={i * anim.staggerItem}
+                    animationDelay={i * 80}
                   />
                 </View>
               );
             })}
-          </View>
+            </View>
+          </Animated.View>
 
           {/* Contradictions */}
           {contradictions.length > 0 && (
             <View style={styles.section}>
               <View style={styles.sectionHeader}>
-                <View style={[styles.sectionAccent, { backgroundColor: colors.accent.red }]} />
+                <View style={[styles.sectionAccent, { backgroundColor: colors.accent.crimson }]} />
                 <Text style={styles.sectionLabel}>CONTRADICTIONS</Text>
                 <Badge label={String(contradictions.length)} variant="danger" style={{ marginLeft: spacing.sm }} />
               </View>
@@ -226,20 +284,24 @@ export default function AgentScreen() {
 
           {/* Action Chain */}
           {actionChain.length > 0 && (
-            <View style={styles.section}>
-              <View style={styles.sectionHeader}>
-                <View style={styles.sectionAccent} />
-                <Text style={styles.sectionLabel}>ACTION CHAIN</Text>
-                <Badge label={`${actionChain.filter((a) => a.status === 'complete').length}/${actionChain.length}`} variant="info" style={{ marginLeft: spacing.sm }} />
+            <Animated.View style={actionChainSectionStyle}>
+              <View style={styles.section}>
+                <View style={styles.sectionHeader}>
+                  <View style={styles.sectionAccent} />
+                  <Text style={styles.sectionLabel}>ACTION CHAIN PLAN</Text>
+                  <Badge label={`${actionChain.filter((a) => a.status === 'complete').length}/${actionChain.length}`} variant="info" style={{ marginLeft: spacing.sm }} />
+                </View>
+                <ActionStepper steps={actionChain} />
               </View>
-              <ActionStepper steps={actionChain} />
-            </View>
+            </Animated.View>
           )}
 
           {/* LLM Log Stream */}
-          <View style={styles.section}>
-            <LLMLogStream tokens={llmTokens} />
-          </View>
+          <Animated.View style={llmSectionStyle}>
+            <View style={styles.section}>
+              <LLMLogStream tokens={llmTokens} />
+            </View>
+          </Animated.View>
 
           <View style={{ height: 120 }} />
         </ScrollView>
@@ -252,16 +314,39 @@ export default function AgentScreen() {
 }
 
 const styles = StyleSheet.create({
-  screen: { flex: 1, backgroundColor: colors.bg.primary },
-  header: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingHorizontal: spacing.md, paddingVertical: spacing.sm, borderBottomWidth: 1, borderBottomColor: colors.border.subtle },
+  screen: { flex: 1, backgroundColor: colors.bg.root },
+  header: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingHorizontal: spacing.md,
+    paddingVertical: spacing.sm,
+    borderBottomWidth: 1,
+    borderBottomColor: colors.border.subtle,
+    backgroundColor: colors.bg.surface
+  },
   backBtn: { paddingVertical: spacing.xs, paddingRight: spacing.md },
-  backText: { fontFamily: typography.mono.fontFamily, fontSize: typography.mono.fontSize, color: colors.accent.cyan },
+  backText: { fontFamily: typography.mono.fontFamily, fontSize: 13, color: colors.accent.cyan, fontWeight: '700' },
   headerTitle: { fontFamily: typography.label.fontFamily, fontSize: typography.label.fontSize, letterSpacing: 1.5, textTransform: 'uppercase', color: colors.text.secondary, flex: 1, textAlign: 'center' },
   content: { paddingHorizontal: spacing.md, paddingTop: spacing.md },
   section: { marginBottom: spacing.lg },
   sectionHeader: { flexDirection: 'row', alignItems: 'center', marginBottom: spacing.md },
   sectionAccent: { width: 3, height: 16, backgroundColor: colors.accent.cyan, borderRadius: 2, marginRight: spacing.sm },
   sectionLabel: { fontFamily: typography.label.fontFamily, fontSize: typography.label.fontSize, letterSpacing: typography.label.letterSpacing, textTransform: 'uppercase', color: colors.text.secondary },
-  banner: { position: 'absolute', top: 0, left: 0, right: 0, zIndex: 100, backgroundColor: colors.accent.green, paddingVertical: spacing.md, paddingTop: spacing.xl, alignItems: 'center' },
-  bannerText: { fontFamily: typography.monoBold.fontFamily, fontSize: typography.monoBold.fontSize, color: colors.text.inverse, letterSpacing: 2 },
+  banner: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    zIndex: 100,
+    backgroundColor: colors.accent.emerald,
+    paddingVertical: spacing.md,
+    alignItems: 'center',
+    shadowColor: colors.accent.emerald,
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 10,
+    elevation: 8,
+  },
+  bannerText: { fontFamily: typography.monoBold.fontFamily, fontSize: 13, color: colors.text.inverse, letterSpacing: 1, fontWeight: '700' },
 });
