@@ -1,0 +1,30 @@
+[
+  {
+    "name": "Indus Metal Corp",
+    "reliability_score": 0.94,
+    "lead_time_days": 5,
+    "last_contact": "2026-05-10",
+    "status": "active"
+  },
+  {
+    "name": "Valves & Actuators Ltd",
+    "reliability_score": 0.42,
+    "lead_time_days": 18,
+    "last_contact": "2026-05-17",
+    "status": "halt"
+  },
+  {
+    "name": "Bearing World Pakistan",
+    "reliability_score": 0.88,
+    "lead_time_days": 3,
+    "last_contact": "2026-05-15",
+    "status": "active"
+  },
+  {
+    "name": "Sino-Lube Importers",
+    "reliability_score": 0.91,
+    "lead_time_days": 7,
+    "last_contact": "2026-05-12",
+    "status": "active"
+  }
+]
