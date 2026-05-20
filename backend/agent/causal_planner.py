@@ -43,7 +43,7 @@ def validate_constraints(actions: list[Action], constraints: dict) -> list[Actio
     Modify if possible, reject if not fixable.
     Log the decision with reason in action.reasoning.
     """
-    budget = constraints.get("max_budget_pkr", float("inf"))
+    budget = constraints.get("max_budget_pkr", constraints.get("emergency_restock_budget_pkr", float("inf")))
     deadline_min = constraints.get("notification_deadline_min", float("inf"))
     
     for action in actions:
@@ -74,7 +74,14 @@ def validate_constraints(actions: list[Action], constraints: dict) -> list[Actio
                     )
         
         if action.action_type == "notify_stakeholder":
-            if action.confidence < 0.4:
+            # If deadline is already expired (< 0), reject the action completely
+            if deadline_min < 0:
+                action.status = "rejected"
+                action.reasoning = (
+                    f"REJECTED: Notification deadline expired ({deadline_min} min). "
+                    + original_reasoning
+                )
+            elif action.confidence < 0.4:
                 action.status = "modified"
                 action.parameters["priority"] = "low"
                 action.reasoning = (

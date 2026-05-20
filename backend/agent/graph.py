@@ -22,11 +22,25 @@ async def ingest_with_noise_filter(state: AgentState) -> AgentState:
     # Call core ingestion
     state = await ingest(state)
     
+    filtered_out = [
+        s for s in state["raw_sources"] 
+        if s.credibility_score < 0.50 or s.status != "active"
+    ]
+    
     # Filter sources with credibility < 0.50
     state["filtered_sources"] = [
         s for s in state["raw_sources"] 
         if s.credibility_score >= 0.50 and s.status == "active"
     ]
+    
+    for s in filtered_out:
+        state["trace"].append({
+            "node": "noise_filter",
+            "event": "low_credibility_removed",
+            "source_id": s.source_id,
+            "credibility_score": s.credibility_score,
+            "reason": "Credibility below 0.50 threshold or status inactive"
+        })
     
     # Trace log update
     state["trace"].append({
@@ -73,18 +87,11 @@ def route_evaluate(state: AgentState) -> str:
     Conditional routing edge function evaluation.
     Determines if graph should repeat execute_step, initiate self_heal, or finalize.
     """
-    has_failed = any(a.status == "failed" for a in state.get("action_plan", []))
+    has_unhandled_error = len(state.get("errors", [])) > 0
     pending_actions = [a for a in state.get("action_plan", []) if a.status == "pending"]
     
-    constraints_manifest = state.get("domain_config", {}).get("constraints", {})
-    max_retries = int(constraints_manifest.get("max_retries", 3))
-    retry_count = state.get("retry_count", 0)
-    
-    if has_failed:
-        if retry_count < max_retries:
-            return "self_heal"
-        else:
-            return "finalize"
+    if has_unhandled_error:
+        return "self_heal"
     elif pending_actions:
         return "execute_step"
     else:
@@ -112,7 +119,13 @@ agent_graph = graph.compile(checkpointer=checkpointer)
 # ──────────────────────────────────────────────────────────────────────
 # EXPORTED RUN AGENT FUNCTION
 # ──────────────────────────────────────────────────────────────────────
-async def run_agent(session_id: str, domain_config: dict) -> AgentState:
+async def run_agent(
+    session_id: str, 
+    domain_config: dict, 
+    prefill_sources: list = None,
+    prefill_action_plan: list = None,
+    prefill_insights: dict = None
+) -> AgentState:
     """
     Orchestrator runner that initializes fresh state schemas and invokes the compiled graph.
     Maintains full step-wise persistence using thread-id config parameters.
@@ -120,11 +133,11 @@ async def run_agent(session_id: str, domain_config: dict) -> AgentState:
     initial_state: AgentState = {
         "session_id": session_id,
         "domain_config": domain_config,
-        "raw_sources": [],
-        "filtered_sources": [],
+        "raw_sources": prefill_sources or [],
+        "filtered_sources": prefill_sources or [],
         "contradictions": [],
-        "insights": {},
-        "action_plan": [],
+        "insights": prefill_insights or {},
+        "action_plan": prefill_action_plan or [],
         "snapshots": [],
         "outcome": None,
         "retry_count": 0,
@@ -132,7 +145,8 @@ async def run_agent(session_id: str, domain_config: dict) -> AgentState:
         "execution_log": [],
         "trace": [],
         "before_state": {},
-        "after_state": {}
+        "after_state": {},
+        "timeline": []
     }
     
     # Run Compiled StateGraph asynchronously

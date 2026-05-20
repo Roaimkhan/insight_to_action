@@ -1,0 +1,133 @@
+/home/roaim/Desktop/ai seekho/backend/tests/stress_test_scenarios.py:41: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+  now = datetime.utcnow()
+/home/roaim/Desktop/ai seekho/backend/tests/stress_test_scenarios.py:35: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+  ingested_at=datetime.utcnow(),
+Key 'title' is not supported in schema, ignoring
+Key 'title' is not supported in schema, ignoring
+Key 'title' is not supported in schema, ignoring
+Key 'title' is not supported in schema, ignoring
+Key 'title' is not supported in schema, ignoring
+Key 'title' is not supported in schema, ignoring
+Key 'title' is not supported in schema, ignoring
+Key 'title' is not supported in schema, ignoring
+Key 'title' is not supported in schema, ignoring
+Key 'title' is not supported in schema, ignoring
+/home/roaim/Desktop/ai seekho/backend/tests/stress_test_scenarios.py:25: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+  age_hours = (datetime.utcnow() - ingested_at).total_seconds() / 3600
+/home/roaim/Desktop/ai seekho/backend/tests/stress_test_scenarios.py:35: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+  ingested_at=datetime.utcnow(),
+Key 'title' is not supported in schema, ignoring
+Key 'title' is not supported in schema, ignoring
+Key 'title' is not supported in schema, ignoring
+Key 'title' is not supported in schema, ignoring
+Key 'title' is not supported in schema, ignoring
+Key 'title' is not supported in schema, ignoring
+Key 'title' is not supported in schema, ignoring
+Key 'title' is not supported in schema, ignoring
+Key 'title' is not supported in schema, ignoring
+Key 'title' is not supported in schema, ignoring
+/home/roaim/Desktop/ai seekho/backend/tests/stress_test_scenarios.py:444: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+  now = datetime.utcnow()
+/home/roaim/Desktop/ai seekho/backend/tests/stress_test_scenarios.py:35: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+  ingested_at=datetime.utcnow(),
+Key 'title' is not supported in schema, ignoring
+Key 'title' is not supported in schema, ignoring
+Key 'title' is not supported in schema, ignoring
+Key 'title' is not supported in schema, ignoring
+Key 'title' is not supported in schema, ignoring
+Key 'title' is not supported in schema, ignoring
+Key 'title' is not supported in schema, ignoring
+Key 'title' is not supported in schema, ignoring
+Key 'title' is not supported in schema, ignoring
+Key 'title' is not supported in schema, ignoring
+/home/roaim/Desktop/ai seekho/backend/tests/stress_test_scenarios.py:25: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+  age_hours = (datetime.utcnow() - ingested_at).total_seconds() / 3600
+============================================================
+ADVERSARIAL STRESS TEST SUITE
+E-Commerce AI Agent — Challenge Compliance Verification
+============================================================
+
+Running ST-1: Three Source Conflict...
+  CONFLICT MATRIX — SKU-003 units_available:
+  Source                          Value  Credibility    Recency   Weight
+  --------------------------------------------------------------------
+  warehouse_system                  450         0.90 0.958     0.862
+  erp_dashboard                     210         0.75 0.750     0.562
+  supplier_confirmation              38         0.80 0.990     0.792
+  Expected disputed: erp_dashboard (lowest weight)
+✅ PASSED ST-1: Three Source Conflict
+   → Contradictions=2, Disputed=erp_dashboard, First action=simulate_procurement_order
+
+
+Running ST-2: Constraint Violation...
+  CONSTRAINT VIOLATION REPORT:
+  A1 (simulate_procurement_order): modified
+    Reasoning: MODIFIED: Original quantity 300 would cost PKR 450,000 exceeding budget PKR 50,000. Reduced to 33 un
+    Modified params: {'item': 'SKU-003', 'quantity': 33, 'budget_pkr': 450000}
+  A2 (notify_stakeholder): rejected
+    Reasoning: REJECTED: Notification deadline expired (-5 min). Procurement must know immediately
+  A3 (schedule_monitoring): success
+    Reasoning: Track stock levels post-action
+✅ PASSED ST-2: Constraint Violation
+   → Rejected=1, Modified=1, Chain continued=True
+
+
+Running ST-3: Failure Recovery Chain...
+  RECOVERY TIMELINE:
+  [] STEP_START           action=A3
+  [] STEP_COMPLETE        action=A3
+  [] STEP_START           action=A1
+  [] STEP_COMPLETE        action=A1
+  [] STEP_START           action=A1
+  [] STEP_COMPLETE        action=A1
+  [] STEP_START           action=A1
+  [] STEP_COMPLETE        action=A1
+  [] STEP_START           action=A2
+  [] STEP_COMPLETE        action=A2
+  [] STEP_START           action=A2
+  [] STEP_COMPLETE        action=A2
+  [] STEP_START           action=A4
+  [] STEP_COMPLETE        action=A4
+  notify_stakeholder called 3 times
+  update_system_record called 2 times
+✅ PASSED ST-3: Failure Recovery Chain
+   → A1=success(3 attempts), A2=rolled_back, A3=success, Rolled_back=1
+
+
+Running ST-4: False Signal Downranking...
+  CREDIBILITY MATRIX:
+  Source                        Credibility    Recency Status
+  -----------------------------------------------------------------
+  unverified_social_post               0.22      0.917 filtered_out
+  psqca_official_feed                  0.97      0.979 active
+  supplier_safety_cert                 0.91      0.958 active
+  sales_dashboard                      0.88      0.993 active
+  order_feed_general                   0.85      1.000 active
+DEBUG insight_text: {'investigation_path': ['investigate unverified social post claim'], 'insights': [{'title': 'unverified recall claim detected', 'confidence': 0.3}], 'risks': [], 'opportunities': [], 'contradictions': [], 'urgency_score': 4, 'domain_detected': 'ecommerce'}
+❌ FAILED ST-4: False Signal Downranking
+   → ASSERTION FAILED: Agent must generate a verification action instead of acting on false signal
+
+
+Running ST-5: Side Effect What-If Analysis...
+✅ PASSED ST-5: Side Effect What-If Analysis
+   → Cascading impacts detected accurately.
+
+
+============================================================
+STRESS TEST RESULTS SUMMARY
+============================================================
+✅ PASSED ST-1: Three Source Conflict
+   Contradictions=2, Disputed=erp_dashboard, First action=simulate_procurement_order
+✅ PASSED ST-2: Constraint Violation
+   Rejected=1, Modified=1, Chain continued=True
+✅ PASSED ST-3: Failure Recovery Chain
+   A1=success(3 attempts), A2=rolled_back, A3=success, Rolled_back=1
+❌ FAILED ST-4: False Signal Downranking
+   ASSERTION FAILED: Agent must generate a verification action instead of acting on false signal
+✅ PASSED ST-5: Side Effect What-If Analysis
+   Cascading impacts detected accurately.
+
+TOTAL: 4/5 passed
+
+1 test(s) failed.
+Fix failing tests before demo. Each failure = a judge can break your demo.
