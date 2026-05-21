@@ -3,10 +3,12 @@
     "preview": {
       "android": { "buildType": "apk" },
       "distribution": "internal",
+      "node": "20.19.4",
       "env": { "BACKEND_URL": "https://squid-gambling-staleness.ngrok-free.dev" }
     },
     "production": {
-      "android": { "buildType": "app-bundle" }
+      "android": { "buildType": "app-bundle" },
+      "node": "20.19.4"
     }
   }
 }
