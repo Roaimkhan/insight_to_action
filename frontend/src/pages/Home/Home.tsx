@@ -23,6 +23,7 @@ import {
   PlayIcon,
 } from '../../components';
 import './Home.css';
+import UploadPromptPanel from '../../components/UploadPromptPanel/UploadPromptPanel';
 
 const scenarios: {
   id: ScenarioId;
@@ -215,108 +216,7 @@ const Home: React.FC = () => {
           </motion.p>
         </motion.section>
 
-        {/* ── Ingestion Dropzone ───────────────────────────────────── */}
-        <motion.section
-          className="home-upload"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2 }}
-        >
-          <SectionHeader title="Ingest Operational Sources" badge="NEW" badgeVariant="info" />
-          
-          <div className="upload-grid">
-            <motion.div 
-              className={`dropzone glass ${isDragActive ? 'active' : ''}`}
-              onDragEnter={handleDrag}
-              onDragOver={handleDrag}
-              onDragLeave={handleDrag}
-              onDrop={handleDrop}
-              whileHover={{ scale: 1.008 }}
-              whileTap={{ scale: 0.995 }}
-            >
-              <input 
-                type="file" 
-                id="file-input" 
-                multiple 
-                onChange={handleFileSelect} 
-                style={{ display: 'none' }}
-              />
-              <label htmlFor="file-input" className="dropzone-label flex-center">
-                {/* Micro-kinetic meshing gears */}
-                <div className="gear-system-container">
-                  <svg className="dropzone-gears" width="76" height="76" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    {/* Gear 1 (Primary brand color) */}
-                    <g className="gear-big" style={{ transformOrigin: '42px 42px' }}>
-                      <circle cx="42" cy="42" r="22" stroke="var(--brand)" strokeWidth="1.5" strokeDasharray="8 4" />
-                      <circle cx="42" cy="42" r="16" stroke="var(--brand)" strokeWidth="3" />
-                      <circle cx="42" cy="42" r="8" stroke="var(--brand)" strokeWidth="1.5" />
-                      <path d="M42 26v6M42 52v6M26 42h6M52 42h6" stroke="var(--brand)" strokeWidth="2" strokeLinecap="round" />
-                    </g>
-                    {/* Gear 2 (Secondary cyan color) */}
-                    <g className="gear-small" style={{ transformOrigin: '72px 58px' }}>
-                      <circle cx="72" cy="58" r="14" stroke="#06B6D4" strokeWidth="1.2" strokeDasharray="5 3" />
-                      <circle cx="72" cy="58" r="10" stroke="#06B6D4" strokeWidth="2.5" />
-                      <circle cx="72" cy="58" r="5" stroke="#06B6D4" strokeWidth="1.2" />
-                      <path d="M72 48v4M72 64v4M62 58h4M78 58h4" stroke="#06B6D4" strokeWidth="1.5" strokeLinecap="round" />
-                    </g>
-                  </svg>
-                  <div className="gear-laser-sweep" />
-                </div>
-                <span className="dropzone-title font-heading">DRAG & DROP SOURCE MATERIAL</span>
-                <span className="dropzone-desc font-body">PDF logs, CSV manifests, and telemetry files. System handles parsing & integrity audits.</span>
-                <span className="dropzone-btn font-mono">BROWSE LOCAL STORAGE</span>
-              </label>
-            </motion.div>
-
-            {/* List of uploaded files */}
-            <AnimatePresence>
-              {uploadedFiles.length > 0 && (
-                <motion.div 
-                  className="uploaded-files-list glass"
-                  initial={{ opacity: 0, x: 20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0, x: 20 }}
-                >
-                  <h3 className="list-title font-heading">Ingested Queue</h3>
-                  <div className="files-scroll">
-                    {uploadedFiles.map((file, i) => (
-                      <motion.div 
-                        key={`${file.name}-${i}`}
-                        className="file-row"
-                        initial={{ opacity: 0, y: 10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                      >
-                        <div className="file-info">
-                          <span className="file-name font-body">{file.name}</span>
-                          <span className="file-size font-mono">{file.size}</span>
-                        </div>
-                        <div className="file-progress-bar">
-                          <motion.div 
-                            className="file-progress-fill"
-                            initial={{ width: 0 }}
-                            animate={{ width: `${file.progress}%` }}
-                            transition={{ duration: 0.3 }}
-                          />
-                        </div>
-                        <span className="file-status font-mono">
-                          {file.progress < 100 ? `${file.progress}%` : 'INGESTED'}
-                        </span>
-                      </motion.div>
-                    ))}
-                  </div>
-                  <motion.button 
-                    className="custom-run-btn font-mono"
-                    onClick={() => handleRunScenario('supply_chain')}
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
-                  >
-                    RUN ANALYSIS WITH CUSTOM SOURCES
-                  </motion.button>
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </div>
-        </motion.section>
+        <UploadPromptPanel />
 
         {/* ── Demo Scenarios ──────────────────────────────────────── */}
         <motion.section

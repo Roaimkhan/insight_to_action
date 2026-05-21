@@ -553,3 +553,35 @@ export const focusIndicatorVariant = {
     },
   },
 };
+
+// Drag-active state for file drop zone
+export const dragActiveVariant = {
+  idle: { scale: 1, borderColor: 'var(--dropzone-border)' },
+  active: {
+    scale: 1.02,
+    borderColor: 'var(--brand)',
+    background: 'var(--dropzone-active-bg)',
+    transition: { duration: 0.2, type: 'tween' as const },
+  },
+};
+
+// Shake for validation errors
+export const shakeVariant = {
+  shake: {
+    x: [0, -10, 10, -8, 8, -4, 4, 0],
+    transition: { duration: 0.5, type: 'tween' as const },
+  },
+};
+
+// File chip entrance
+export const chipEntranceVariant = {
+  hidden: { opacity: 0, scale: 0.85, y: 8 },
+  visible: { opacity: 1, scale: 1, y: 0, transition: { type: 'spring' as const, damping: 20, stiffness: 180 } },
+  exit: { opacity: 0, scale: 0.8, x: 20, transition: { duration: 0.15, type: 'tween' as const } },
+};
+
+// "Try Demo" button arrow slide
+export const arrowSlideVariant = {
+  rest: { x: 0 },
+  hover: { x: 5, transition: { type: 'spring' as const, damping: 20, stiffness: 300 } },
+};

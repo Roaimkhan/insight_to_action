@@ -41,7 +41,6 @@ export default function RootLayout() {
           animation: 'slide_from_right',
         }}
       >
-        <Stack.Screen name="(auth)/login" options={{ animation: 'fade' }} />
         <Stack.Screen name="index" />
         <Stack.Screen name="agent" options={{ animation: 'slide_from_bottom' }} />
         <Stack.Screen name="comparison" options={{ animation: 'fade' }} />

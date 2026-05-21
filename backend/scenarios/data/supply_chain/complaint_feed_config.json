@@ -1,8 +1,0 @@
-{
-  "scenario": "supply_chain",
-  "complaint_rate_per_hour": 120,
-  "peak_skus": [
-    "SKU-003",
-    "SKU-007"
-  ]
-}

@@ -3,47 +3,47 @@ export const colors = {
 
   // ── Base Surfaces ──────────────────────────────────────────────────────
   bg: {
-    root:       '#F0F4FA',              // screen root — cool off-white, never pure white
+    root:       '#E8EEF8',              // screen root — deeper cool off-white for stronger contrast
     surface:    '#FFFFFF',              // card surfaces — pure white for maximum contrast
-    elevated:   '#FAFCFF',              // modal, popover, elevated panel
-    sunken:     '#E8EDF5',              // input fields, inset areas
-    glass:      'rgba(255, 255, 255, 0.62)',  // glassmorphism panel surface
-    glassDark:  'rgba(240, 244, 250, 0.80)',  // heavier glass for overlays
-    overlay:    'rgba(15, 23, 42, 0.45)',     // modal backdrop
+    elevated:   '#F7FAFF',              // modal, popover, elevated panel
+    sunken:     '#DCE5F2',              // input fields, inset areas
+    glass:      'rgba(255, 255, 255, 0.78)',  // glassmorphism panel surface
+    glassDark:  'rgba(232, 238, 248, 0.90)',  // heavier glass for overlays
+    overlay:    'rgba(15, 23, 42, 0.55)',     // modal backdrop
     terminal:   '#0D1117',              // LLM log terminal background — stays dark
   },
 
   // ── Accent Colors — ONE semantic role each ─────────────────────────────
   accent: {
     // Primary / Live
-    cyan:       '#0099CC',             // LIVE · ACTIVE · primary CTA — rich teal-blue
-    cyanLight:  '#E6F6FB',             // cyan tint background
-    cyanGlow:   'rgba(0, 153, 204, 0.18)',  // cyan shadow/glow
+    cyan:       '#0078B8',             // LIVE · ACTIVE · primary CTA — deeper teal-blue
+    cyanLight:  '#D9F3FB',             // cyan tint background
+    cyanGlow:   'rgba(0, 120, 184, 0.24)',  // cyan shadow/glow
 
     // Success
-    emerald:    '#059669',             // SUCCESS · resolved · completed
-    emeraldLight: '#D1FAE5',           // emerald tint background
-    emeraldGlow:  'rgba(5, 150, 105, 0.18)',
+    emerald:    '#047857',             // SUCCESS · resolved · completed
+    emeraldLight: '#D9FBEA',           // emerald tint background
+    emeraldGlow:  'rgba(4, 120, 87, 0.24)',
 
     // Warning
-    amber:      '#D97706',             // WARNING · stale · Tier 1 heal
-    amberLight: '#FEF3C7',             // amber tint background
-    amberGlow:  'rgba(217, 119, 6, 0.18)',
+    amber:      '#B45309',             // WARNING · stale · Tier 1 heal
+    amberLight: '#FFF1D6',             // amber tint background
+    amberGlow:  'rgba(180, 83, 9, 0.24)',
 
     // Danger
-    crimson:    '#DC2626',             // FAILURE · contradiction · Tier 3
-    crimsonLight: '#FEE2E2',           // crimson tint background
-    crimsonGlow:  'rgba(220, 38, 38, 0.18)',
+    crimson:    '#B91C1C',             // FAILURE · contradiction · Tier 3
+    crimsonLight: '#FFE0E0',           // crimson tint background
+    crimsonGlow:  'rgba(185, 28, 28, 0.24)',
 
     // LLM Reasoning
-    violet:     '#7C3AED',             // THINKING · LLM stream only
-    violetLight: '#EDE9FE',            // violet tint background
-    violetGlow:  'rgba(124, 58, 237, 0.18)',
+    violet:     '#6D28D9',             // THINKING · LLM stream only
+    violetLight: '#E9E2FF',            // violet tint background
+    violetGlow:  'rgba(109, 40, 217, 0.24)',
 
     // Fallback / Tier 2
-    tangerine:  '#EA580C',             // TIER 2 SELF-HEAL only
-    tangerineLight: '#FFEDD5',
-    tangerineGlow:  'rgba(234, 88, 12, 0.18)',
+    tangerine:  '#C2410C',             // TIER 2 SELF-HEAL only
+    tangerineLight: '#FFE4CC',
+    tangerineGlow:  'rgba(194, 65, 12, 0.24)',
     
     // Legacy support alias if needed
     teal:       '#0099CC',             // maps to cyan for active indicators
@@ -51,10 +51,10 @@ export const colors = {
 
   // ── Text ───────────────────────────────────────────────────────────────
   text: {
-    primary:    '#0F172A',             // main text — near-black, not pure black
-    secondary:  '#475569',             // descriptions, body
-    muted:      '#94A3B8',             // timestamps, metadata, placeholders
-    disabled:   '#CBD5E1',             // inactive elements
+    primary:    '#0B1220',             // main text — near-black, not pure black
+    secondary:  '#334155',             // descriptions, body
+    muted:      '#64748B',             // timestamps, metadata, placeholders
+    disabled:   '#A8B4C7',             // inactive elements
     inverse:    '#FFFFFF',             // text on dark backgrounds
     onCyan:     '#FFFFFF',             // text on cyan bg
     onEmerald:  '#FFFFFF',             // text on emerald bg
@@ -64,35 +64,35 @@ export const colors = {
 
   // ── Borders ────────────────────────────────────────────────────────────
   border: {
-    subtle:     'rgba(15, 23, 42, 0.06)',    // resting card border
-    default:    'rgba(15, 23, 42, 0.12)',    // standard border
-    medium:     'rgba(15, 23, 42, 0.20)',    // emphasized border
-    strong:     'rgba(15, 23, 42, 0.35)',    // divider, strong border
-    cyan:       'rgba(0, 153, 204, 0.30)',   // active/focused
-    cyanStrong: 'rgba(0, 153, 204, 0.60)',   // highly active
-    emerald:    'rgba(5, 150, 105, 0.35)',   // success
-    amber:      'rgba(217, 119, 6, 0.35)',   // warning
-    crimson:    'rgba(220, 38, 38, 0.40)',   // danger
-    violet:     'rgba(124, 58, 237, 0.30)',  // LLM thinking
+    subtle:     'rgba(15, 23, 42, 0.08)',    // resting card border
+    default:    'rgba(15, 23, 42, 0.16)',    // standard border
+    medium:     'rgba(15, 23, 42, 0.24)',    // emphasized border
+    strong:     'rgba(15, 23, 42, 0.40)',    // divider, strong border
+    cyan:       'rgba(0, 120, 184, 0.40)',   // active/focused
+    cyanStrong: 'rgba(0, 120, 184, 0.70)',   // highly active
+    emerald:    'rgba(4, 120, 87, 0.40)',   // success
+    amber:      'rgba(180, 83, 9, 0.40)',   // warning
+    crimson:    'rgba(185, 28, 28, 0.46)',   // danger
+    violet:     'rgba(109, 40, 217, 0.36)',  // LLM thinking
   },
 
   // ── Glass Blur Borders ─────────────────────────────────────────────────
   glass: {
-    border:     'rgba(255, 255, 255, 0.70)',  // glass card outer border
-    innerBorder:'rgba(255, 255, 255, 0.40)',  // glass card inner highlight
-    shadow:     'rgba(15, 23, 42, 0.10)',     // glass card drop shadow
+    border:     'rgba(255, 255, 255, 0.82)',  // glass card outer border
+    innerBorder:'rgba(255, 255, 255, 0.50)',  // glass card inner highlight
+    shadow:     'rgba(15, 23, 42, 0.14)',     // glass card drop shadow
   },
 
   // ── Gradients (as LinearGradient color arrays) ─────────────────────────
   gradient: {
-    screenBg:   ['#EDF2FB', '#F0F4FA', '#EDF2FB'],  // subtle screen bg
-    cardSheen:  ['#FFFFFF', '#F8FAFF'],              // card surface
-    glassPanel: ['rgba(255,255,255,0.80)', 'rgba(255,255,255,0.50)'],
-    cyanStreak: ['rgba(0,153,204,0.08)', 'rgba(0,153,204,0.00)'],
-    crimsonFlare:['rgba(220,38,38,0.10)', 'rgba(220,38,38,0.00)'],
-    emeraldPulse:['rgba(5,150,105,0.10)', 'rgba(5,150,105,0.00)'],
-    shimmer:    ['#F0F4FA', '#FFFFFF', '#F0F4FA'],   // loading shimmer
-    headerBar:  ['rgba(255,255,255,0.92)', 'rgba(255,255,255,0.80)'],
+    screenBg:   ['#E8EEF8', '#F0F4FB', '#E8EEF8'],  // subtle screen bg
+    cardSheen:  ['#FFFFFF', '#F6FAFF'],              // card surface
+    glassPanel: ['rgba(255,255,255,0.88)', 'rgba(255,255,255,0.60)'],
+    cyanStreak: ['rgba(0,120,184,0.10)', 'rgba(0,120,184,0.00)'],
+    crimsonFlare:['rgba(185,28,28,0.12)', 'rgba(185,28,28,0.00)'],
+    emeraldPulse:['rgba(4,120,87,0.12)', 'rgba(4,120,87,0.00)'],
+    shimmer:    ['#E8EEF8', '#FFFFFF', '#E8EEF8'],   // loading shimmer
+    headerBar:  ['rgba(255,255,255,0.96)', 'rgba(255,255,255,0.86)'],
     terminalBg: ['#0D1117', '#111827'],               // terminal stays dark
   },
 

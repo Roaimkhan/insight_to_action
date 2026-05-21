@@ -8,9 +8,9 @@ class AgentWebSocket {
   private cleanup: (() => void) | null = null;
   private fallbackTimeout: ReturnType<typeof setTimeout> | null = null;
 
-  connect(backendUrl: string, scenarioId: ScenarioId, onEvent: (event: AgentEvent) => void): void {
+  connect(backendUrl: string, sessionId: string, scenarioId: ScenarioId, onEvent: (event: AgentEvent) => void): void {
     try {
-      this.ws = new WebSocket(`${backendUrl}/ws/agent/${scenarioId}`);
+      this.ws = new WebSocket(`${backendUrl}/ws/${sessionId}`);
 
       // If no connection within 3s, fall back to mock
       this.fallbackTimeout = setTimeout(() => {

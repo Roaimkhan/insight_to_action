@@ -22,6 +22,7 @@ import {
 } from '../../components';
 import type { ActionStep } from '../../components';
 import './Agent.css';
+import UploadPromptPanel from '../../components/UploadPromptPanel/UploadPromptPanel';
 
 const Agent: React.FC = () => {
   const navigate = useNavigate();
@@ -284,6 +285,11 @@ const Agent: React.FC = () => {
             </div>
           </div>
         </motion.header>
+
+        {/* Upload + Prompt Panel */}
+        <div style={{ marginBottom: spacing.md }}>
+          <UploadPromptPanel />
+        </div>
 
         {/* Node Badge */}
         <motion.div

@@ -3,7 +3,7 @@
     "preview": {
       "android": { "buildType": "apk" },
       "distribution": "internal",
-      "env": { "BACKEND_URL": "http://192.168.1.100:8000" }
+      "env": { "BACKEND_URL": "https://squid-gambling-staleness.ngrok-free.dev" }
     },
     "production": {
       "android": { "buildType": "app-bundle" }

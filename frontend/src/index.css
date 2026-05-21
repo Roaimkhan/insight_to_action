@@ -6,64 +6,80 @@
 /* ── CSS Variables (Single Source of Truth) ────────────────────────────── */
 :root {
   /* Backgrounds */
-  --bg-base:          #F4F6FD;   /* page root — slight blue-cool white */
+  --bg-base:          #E8EEF8;   /* page root — higher contrast cool white */
   --bg-surface:       #FFFFFF;   /* card surfaces */
-  --bg-sunken:        #E9EDF8;   /* inputs, code blocks */
-  --bg-overlay:       rgba(244, 246, 253, 0.94);
+  --bg-sunken:        #DCE5F2;   /* inputs, code blocks */
+  --bg-overlay:       rgba(232, 238, 248, 0.96);
 
   /* Glass layers */
-  --glass-1:          rgba(255, 255, 255, 0.70);   /* base glass */
-  --glass-2:          rgba(255, 255, 255, 0.88);   /* elevated glass */
-  --glass-3:          rgba(255, 255, 255, 0.96);   /* top-level glass */
-  --glass-dark:       rgba(17, 24, 39, 0.88);      /* terminal panel */
-  --glass-border:     rgba(255, 255, 255, 0.80);
+  --glass-1:          rgba(255, 255, 255, 0.82);   /* base glass */
+  --glass-2:          rgba(255, 255, 255, 0.94);   /* elevated glass */
+  --glass-3:          rgba(255, 255, 255, 0.98);   /* top-level glass */
+  --glass-dark:       rgba(17, 24, 39, 0.92);      /* terminal panel */
+  --glass-border:     rgba(255, 255, 255, 0.92);
   --glass-border-dark: rgba(255, 255, 255, 0.10);
 
   /* Brand — deep sapphire blue */
-  --brand:            #1848C8;
-  --brand-hover:      #1338A8;
-  --brand-light:      #E8EFFE;
-  --brand-subtle:     rgba(24, 72, 200, 0.08);
+  --brand:            #0F5DBA;
+  --brand-hover:      #0B4A96;
+  --brand-light:      #D8ECFF;
+  --brand-subtle:     rgba(15, 93, 186, 0.12);
 
   /* Semantic */
   --success:          #047857;   /* emerald */
-  --success-light:    #ECFDF5;
-  --success-border:   rgba(4, 120, 87, 0.22);
+  --success-light:    #D9FBEA;
+  --success-border:   rgba(4, 120, 87, 0.28);
   --warning:          #B45309;   /* amber */
-  --warning-light:    #FFFBEB;
-  --warning-border:   rgba(180, 83, 9, 0.22);
+  --warning-light:    #FFF1D6;
+  --warning-border:   rgba(180, 83, 9, 0.28);
   --danger:           #B91C1C;   /* red */
-  --danger-light:     #FEF2F2;
-  --danger-border:    rgba(185, 28, 28, 0.22);
+  --danger-light:     #FFE0E0;
+  --danger-border:    rgba(185, 28, 28, 0.28);
   --ai-violet:        #6D28D9;   /* LLM stream */
-  --ai-violet-light:  #F5F3FF;
-  --ai-border:        rgba(109, 40, 217, 0.22);
-  --live-teal:        #0E7490;   /* real-time / active */
+  --ai-violet-light:  #E9E2FF;
+  --ai-border:        rgba(109, 40, 217, 0.28);
+  --live-teal:        #0F7A9A;   /* real-time / active */
   --live-teal-light:  #ECFEFF;
 
   /* Text */
-  --text-primary:     #0D1526;
-  --text-secondary:   #4A5568;
-  --text-muted:       #94A3B8;
-  --text-disabled:    #CBD5E1;
+  --text-primary:     #0B1220;
+  --text-secondary:   #334155;
+  --text-muted:       #64748B;
+  --text-disabled:    #A8B4C7;
   --text-inverse:     #FFFFFF;
   --text-brand:       #1848C8;
 
   /* Borders */
-  --border-subtle:    rgba(13, 21, 38, 0.06);
-  --border-default:   rgba(13, 21, 38, 0.12);
-  --border-strong:    rgba(13, 21, 38, 0.22);
-  --border-brand:     rgba(24, 72, 200, 0.28);
+  --border-subtle:    rgba(13, 21, 38, 0.08);
+  --border-default:   rgba(13, 21, 38, 0.16);
+  --border-strong:    rgba(13, 21, 38, 0.28);
+  --border-brand:     rgba(15, 93, 186, 0.36);
+
+  /* Drop zone states */
+  --dropzone-bg: rgba(15, 93, 186, 0.05);
+  --dropzone-border: rgba(15, 93, 186, 0.28);
+  --dropzone-active-bg: rgba(15, 93, 186, 0.10);
+  --dropzone-active-border: rgba(15, 93, 186, 0.72);
+  --dropzone-error-border: rgba(185, 28, 28, 0.56);
+
+  /* File type colors */
+  --file-pdf: #DC2626;
+  --file-csv: #16A34A;
+  --file-xlsx: #15803D;
+  --file-json: #D97706;
+  --file-txt: #6B7280;
+  --file-image: #7C3AED;
+  --file-zip: #4B5563;
 
   /* Shadows */
-  --shadow-xs: 0 1px 2px rgba(13,21,38,0.04);
-  --shadow-sm: 0 2px 8px rgba(13,21,38,0.06), 0 1px 2px rgba(13,21,38,0.04);
-  --shadow-md: 0 6px 24px rgba(13,21,38,0.08), 0 2px 6px rgba(13,21,38,0.04);
-  --shadow-lg: 0 16px 48px rgba(13,21,38,0.10), 0 6px 16px rgba(13,21,38,0.06);
-  --shadow-xl: 0 32px 80px rgba(13,21,38,0.12), 0 12px 32px rgba(13,21,38,0.08);
-  --shadow-glow-brand:   0 0 32px rgba(24,72,200,0.18);
-  --shadow-glow-success: 0 0 32px rgba(4,120,87,0.18);
-  --shadow-glow-danger:  0 0 32px rgba(185,28,28,0.18);
+  --shadow-xs: 0 1px 2px rgba(13,21,38,0.05);
+  --shadow-sm: 0 2px 8px rgba(13,21,38,0.08), 0 1px 2px rgba(13,21,38,0.05);
+  --shadow-md: 0 6px 24px rgba(13,21,38,0.10), 0 2px 6px rgba(13,21,38,0.05);
+  --shadow-lg: 0 16px 48px rgba(13,21,38,0.14), 0 6px 16px rgba(13,21,38,0.08);
+  --shadow-xl: 0 32px 80px rgba(13,21,38,0.16), 0 12px 32px rgba(13,21,38,0.10);
+  --shadow-glow-brand:   0 0 32px rgba(15,93,186,0.22);
+  --shadow-glow-success: 0 0 32px rgba(4,120,87,0.22);
+  --shadow-glow-danger:  0 0 32px rgba(185,28,28,0.22);
 
   /* Typography variables */
   --font-display: 'Plus Jakarta Sans', sans-serif;

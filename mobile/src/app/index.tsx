@@ -16,9 +16,9 @@ import PulsingDot from '../components/ui/PulsingDot';
 import Badge from '../components/ui/Badge';
 import ScanLine from '../components/ui/ScanLine';
 import type { ScenarioId } from '../types/agent';
-
-// Global memory state for auth
-let isUserAuthenticated = false;
+import UploadPromptPanel from '../components/UploadPromptPanel/UploadPromptPanel';
+import DemoBottomSheet from '../components/Demo/DemoBottomSheet';
+import { useRef } from 'react';
 
 interface ScenarioData {
   id: ScenarioId;
@@ -59,10 +59,6 @@ const scenarios: ScenarioData[] = [
     description: 'Brand sentiment spike with stale social data vs real-time API'
   },
 ];
-
-export function setMobileAuthenticated(val: boolean) {
-  isUserAuthenticated = val;
-}
 
 // ── Counter Component for Premium Dashboard Feel ──────────────────
 const Counter: React.FC<{ value: number; suffix?: string; delay: number }> = ({ value, suffix = '', delay }) => {
@@ -174,14 +170,6 @@ export default function HomeScreen() {
   
   const [uploadedFiles, setUploadedFiles] = useState<{ name: string; size: string }[]>([]);
   const [isUploading, setIsUploading] = useState(false);
-
-  // Authentication guard redirect
-  useEffect(() => {
-    if (!isUserAuthenticated) {
-      setMobileAuthenticated(true);
-      router.replace('/(auth)/login');
-    }
-  }, []);
 
   // Entrance animations for premium feel
   const headerOpacity = useSharedValue(0);
@@ -356,6 +344,10 @@ export default function HomeScreen() {
           <View style={[styles.sectionAccent, { backgroundColor: colors.accent.cyan }]} />
           <Text style={styles.sectionLabel}>OPERATIONAL INGESTION</Text>
         </Animated.View>
+          <View style={{ marginTop: 12 }}>
+            <UploadPromptPanel />
+          </View>
+          <DemoBottomSheet sheetRef={useRef(null)} />
 
         {/* Upload Container */}
         <Animated.View style={[styles.uploadBox, uploadBoxStyle]}>
