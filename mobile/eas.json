@@ -1,10 +1,18 @@
 {
+  "cli": {
+    "appVersionSource": "remote"
+  },
   "build": {
     "preview": {
       "android": { "buildType": "apk" },
       "distribution": "internal",
       "node": "20.19.4",
-      "env": { "BACKEND_URL": "https://squid-gambling-staleness.ngrok-free.dev" }
+      "env": { "BACKEND_URL": "https://squid-gambling-staleness.ngrok-free.dev" },
+      "cache": { "disabled": true },
+      "config": "app.json",
+      "beforeInstall": {
+        "command": "npm install --legacy-peer-deps"
+      }
     },
     "production": {
       "android": { "buildType": "app-bundle" },
