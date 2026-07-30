@@ -1,4 +1,4 @@
-# E-Commerce AI Agent Platform — Autonomous Supply Chain Intelligence
+# E-Commerce AI Agent Platform 
 
 ## 1. Executive Summary
 
