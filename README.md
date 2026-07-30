@@ -17,7 +17,7 @@ The platform leverages LangGraph state machines and specialized analytical queri
 - **Fragmented Returns Analysis**: Correlates return rates dynamically against the 90-day SQLite baseline utilizing standard deviation (`SQRT(AVG(x²) - AVG(x)²)`) inside pure SQL CTEs, immediately escalating systematic fulfillment or product quality defects before they cascade.
 - **Influencer-Driven Demand Spikes**: The temporal analysis engine monitors multi-channel `order_velocity`. When rolling 7-day velocity exceeds 150% of the established baseline, the constraint builder proactively raises the `emergency_restock_budget` and accelerates `restock_lead_time_days` to prevent critical stockouts.
 - **Supplier Degradation & Drift**: Continuously tracks fulfillment rates and delivery SLAs within `supplier_records`. A decaying on-time delivery rate (< 70%) or unrecorded overdue deliveries directly triggers escalation protocols, shortening contact deadlines and alerting human oversight.
-- **Sentiment & Quality Disconnects**: Cross-references structured CSV summaries with real-time NLP sentiment feeds. Contradiction scoring dynamically weights real-time crisis signals over stale batch reports using decaying credibility algorithms, ensuring the agent reacts to immediate customer reality rather than outdated static dashboards.
+- **Sentiment & Quality Disconnects**: Cross-references structured CSV summaries with real-time NLP sentiment feeds. Contradiction scoring dynamically weights real-time crisis signals over stale batch reports using decaying credibility algorithms, ensuring the agent reacts to immediate customer reality rather than outdated static dashboards!.
 
 ## 4. Technical Stack & Architecture Highlights
 
